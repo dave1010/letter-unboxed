@@ -1,0 +1,79 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/.vitest-cache
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# local env files
+.env*.local
+.env
+
+# vercel
+.vercel/
+
+# typescript
+*.tsbuildinfo
+
+# temp files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.info
+
+# Optional: VS Code
+.vscode/
+
+# Optional: Mac
+.DS_Store
+
+# Optional: Windows
+Thumbs.db
+
+# Optional: Linux
+.directory
+
+# Optional: JetBrains IDEs
+.idea/
+
+# Optional: other
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
