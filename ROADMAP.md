@@ -12,15 +12,15 @@ Keep README.md up to date with how to run/use the project.
 This phase focuses on getting the project foundation right, with automated testing and deployment previews from the start, before functional code is written.
 
 ### Project Setup
-- [ ] Initialize project repository
-- [ ] Set up TypeScript project structure
-- [ ] Choose and configure a framework (e.g., React/Next.js for Vercel)
-- [ ] Set up basic build and development scripts
+- [x] Initialize project repository
+- [x] Set up TypeScript project structure
+- [x] Choose and configure a framework (e.g., React/Next.js for Vercel)
+- [x] Set up basic build and development scripts
 
 ### Testing & CI/CD
-- [ ] Set up a Continuous Integration (CI) pipeline (e.g., GitHub Actions)
-- [ ] Configure CI to run tests on every push/PR
-- [ ] Set up a test runner (e.g., Jest, Vitest) and add a placeholder test to ensure the CI pipeline is working.
+- [x] Set up a Continuous Integration (CI) pipeline (e.g., GitHub Actions)
+- [x] Configure CI to run tests on every push/PR
+- [x] Set up a test runner (e.g., Jest, Vitest) and add a placeholder test to ensure the CI pipeline is working.
 
 ### Deployment
 - [ ] Set up a Vercel project for deployment
