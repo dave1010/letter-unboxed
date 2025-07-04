@@ -5,12 +5,45 @@ It can be used to "cheat", to help you out or to find alternative solutions.
 It doesn't just give complete solutions to Letter Boxed but provides
 tools to help you solve it.
 
+## Getting Started
+
+First, install the dependencies:
+
+```bash
+npm install
+```
+
+Then, run the development server:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+To build the project for production:
+
+```bash
+npm run build
+```
+
+To run the tests:
+
+```bash
+npm test
+```
+
+To run the tests with UI:
+
+```bash
+npm run test:ui
+```
+
 ## Development
 
-tbc. whatever is easy to build and deploy to vercel, develop and test.
-
-single page app.
-ideally works offline.
+This project is a Next.js application bootstrapped with `create-next-app` and uses TypeScript, Tailwind CSS, and Vitest for testing. Continuous Integration is set up with GitHub Actions.
 
 ## Dictionary Word Lists
 
