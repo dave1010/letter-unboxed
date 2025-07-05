@@ -91,8 +91,7 @@ eg words must start or end with specific letter
 
 ## Display
 
-awesome / cool UI that perhaps looks 3D.
-there might be lots of matching results
+The web UI features a dark theme with an animated gradient background. Result panels use translucent backgrounds so the motion subtly shows through without affecting readability. This colourful style makes the app feel lively while still keeping focus on the puzzle results.
 
 ## Code
 
