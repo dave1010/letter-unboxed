@@ -29,18 +29,7 @@ export const solveCommandHandler = async (argv: any) => {
   const mustUseLetters = argv.mustUse ? argv.mustUse.toLowerCase() : '';
   const cannotUseLetters = argv.cannotUse ? argv.cannotUse.toLowerCase() : '';
 
-  let matchingWords: string[] = [];
-
-  if (mustUseLetters) {
-    matchingWords = dictionary.filterAvailableRequire(availableLetters, mustUseLetters);
-  } else {
-    matchingWords = dictionary.filterAvailable(availableLetters);
-  }
-
-  if (cannotUseLetters) {
-    const tempDictionary = new Dictionary(...matchingWords);
-    matchingWords = tempDictionary.filterUnavailable(cannotUseLetters);
-  }
+  const matchingWords: string[] = dictionary.filter(availableLetters, mustUseLetters, cannotUseLetters);
 
   return {
     matchingWords,

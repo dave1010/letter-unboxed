@@ -62,6 +62,8 @@ Example:
 npm run cli -- solve abcdefghijkl -m a -c z -d src/dictionary/scowl_100.txt
 ```
 
+The CLI now uses a combined filtering logic, so `--must-use` and `--cannot-use` flags are applied simultaneously.
+
 ## Development
 
 This project is a Next.js application bootstrapped with `create-next-app` and uses TypeScript, Tailwind CSS, and Vitest for testing. Continuous Integration is set up with GitHub Actions.

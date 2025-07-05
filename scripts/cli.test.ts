@@ -103,4 +103,9 @@ describe('CLI', () => {
       'banana',
     ]);
   });
+
+  it('should correctly filter with available, must-use, and cannot-use letters', async () => {
+    const result = await runCli(['solve', 'aple', '--must-use', 'a', '--cannot-use', 'p']);
+    expect(result.matchingWords).toEqual([]);
+  });
 });

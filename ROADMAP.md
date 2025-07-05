@@ -44,7 +44,7 @@ This phase focuses on getting the basic, essential features working to have a us
 - [x] Defined a format for the dictionary: a plain text file with one word per line. This can be loaded into a JavaScript Set for efficient lookups.
 - [ ] Write a script to process the raw word list into the defined format
 - [x] Create a robust way to load dictionaries so its available to a CLI script (and later web)
-- [ ] Create some test lookup query / regex that mimmick the functionality we'll create later
+- [x] Create some test lookup query / regex that mimmick the functionality we'll create later
 - [x] Run some performance tests to ensure a smaller dict can be searched in under 500ms
 - [ ] Research suitable dictionary size for production use (extensive perf testing needed)
 - [ ] Configure dictionary creation script to be close to NYT Letter Boxed rules (eg non proper nouns)
@@ -61,22 +61,29 @@ This phase focuses on getting the basic, essential features working to have a us
 - [x] Implement CLI command to take letters as input
 - [x] Implement CLI flags for "must use" and "can't use" letters
 - [x] Print matching words to the console
+- [x] CLI uses the new `filter` method
 
 
 ### Basic Web UI (MVP)
-- [ ] Create a simple page layout
-- [ ] Implement the letter selection UI (e.g., buttons for letters)
-- [ ] Implement a basic 3-way toggle for letter selection:
-    - [ ] Can be used (default)
-    - [ ] Must be used
-    - [ ] Can't be used
-- [ ] Display the list of matching words
-- [ ] Implement live updates as letter selections change
+- [x] Create a simple page layout
+- [x] Implement the letter selection UI (e.g., buttons for letters)
+- [x] Implement a basic 3-way toggle for letter selection:
+    - [x] Can be used (default)
+    - [x] Must be used
+    - [x] Can't be used
+- [x] Display the list of matching words
+- [x] Implement live updates as letter selections change
 - [ ] Write integration tests for the UI components
 
 ## Phase 3: Feature Enhancement & UX
 
 This phase builds on the MVP to add more powerful features and improve the user experience.
+
+### Results view (web and CLI)
+
+- [ ] Show count of results
+- [ ] Sorting results A-Z, length, asc/desc
+- [ ] Limit (defailt to 1000 just on web)
 
 ### Advanced Filtering
 - [ ] Implement filter: word must start with a specific letter
@@ -90,16 +97,14 @@ This phase builds on the MVP to add more powerful features and improve the user 
 
 ### UI/UX Improvements
 - [ ] Design a more polished and intuitive user interface
-- [ ] Implement a better way to display a large number of results (e.g., pagination, virtual scrolling)
+- [ ] Text logo
+- [ ] About / help popup
+- [ ] Implement a better way to display a large number of results (e.g., scrolling just the div)
 - [ ] Make the UI responsive for different screen sizes
 
 ### Offline Support
 - [ ] Implement service workers to cache the application shell and data
 - [ ] Ensure the application is fully functional without an internet connection after the first visit
-
-## Phase 4: Production Readiness & Polish
-
-This phase focuses on making the project robust, maintainable, and easy to deploy.
 
 ### Advanced UI
 - [ ] Explore and implement a more "awesome/cool" UI with animations

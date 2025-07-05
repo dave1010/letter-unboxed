@@ -107,4 +107,52 @@ export class Dictionary {
     }
     return filtered;
   }
+
+  /**
+   * Filters words based on available, required, and unavailable letters.
+   * @param availableLetters A string containing the letters that are available.
+   * @param requiredLetters A string containing the letters that must be present in the word.
+   * @param unavailableLetters A string containing the letters that cannot be present in the word.
+   * @returns An array of words from the dictionary that meet all criteria.
+   */
+  public filter(availableLetters: string, requiredLetters: string, unavailableLetters: string): string[] {
+    const availableLettersSet = new Set(availableLetters.toLowerCase());
+    const requiredLettersSet = new Set(requiredLetters.toLowerCase());
+    const unavailableLettersSet = new Set(unavailableLetters.toLowerCase());
+    const filtered: string[] = [];
+
+    for (const word of this.words) {
+      let isValid = true;
+
+      // Check for unavailable letters
+      for (const char of word) {
+        if (unavailableLettersSet.has(char)) {
+          isValid = false;
+          break;
+        }
+      }
+      if (!isValid) continue;
+
+      // Check if word uses only availableLetters
+      for (const char of word) {
+        if (!availableLettersSet.has(char)) {
+          isValid = false;
+          break;
+        }
+      }
+      if (!isValid) continue;
+
+      // Check for requiredLetters
+      for (const char of requiredLettersSet) {
+        if (!word.includes(char)) {
+          isValid = false;
+          break;
+        }
+      }
+      if (isValid) {
+        filtered.push(word);
+      }
+    }
+    return filtered;
+  }
 }

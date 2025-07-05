@@ -34,6 +34,26 @@ describe('Dictionary', () => {
     expect(dictionary.filterAvailableRequire('apple', 'p')).toEqual(expect.arrayContaining(['apple']));
   });
 
+  it('should filter words based on available, required, and unavailable letters (filter)', () => {
+    const dictionary = new Dictionary('apple', 'banana', 'apricot', 'bandana', 'orange', 'grape', 'apply');
+    // Available: a,p,l,e, Required: a, Unavailable: b
+    expect(dictionary.filter('apley', 'a', 'b')).toEqual(expect.arrayContaining(['apple', 'apply']));
+    // Available: a,p,l,e, Required: p, Unavailable: b
+    expect(dictionary.filter('aple', 'p', 'b')).toEqual(expect.arrayContaining(['apple']));
+    // Available: a,p,l,e, Required: a,p, Unavailable: b
+    expect(dictionary.filter('aple', 'ap', 'b')).toEqual(expect.arrayContaining(['apple']));
+    // Available: a,p,l,e, Required: z, Unavailable: b
+    expect(dictionary.filter('aple', 'z', 'b')).toEqual([]);
+    // Available: a,p,l,e, Required: a, Unavailable: p
+    expect(dictionary.filter('aple', 'a', 'p')).toEqual([]);
+    // Available: b,a,n, Required: b, Unavailable: p
+    expect(dictionary.filter('ban', 'b', 'p')).toEqual(expect.arrayContaining(['banana']));
+    // Available: b,a,n,d, Required: b, Unavailable: p
+    expect(dictionary.filter('band', 'b', 'p')).toEqual(expect.arrayContaining(['bandana']));
+    // Available: o,r,a,n,g,e, Required: o, Unavailable: p
+    expect(dictionary.filter('orange', 'o', 'p')).toEqual(expect.arrayContaining(['orange']));
+  });
+
   it('should handle empty dictionary', () => {
     const dictionary = new Dictionary();
     expect(dictionary.hasWord('anyword')).toBe(false);
