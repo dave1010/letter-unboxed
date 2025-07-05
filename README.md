@@ -46,7 +46,7 @@ npm run test:ui
 To use the command-line interface, run:
 
 ```bash
-npm run cli solve <letters> [options]
+npm run cli -- solve <letters> [options]
 ```
 
 - `<letters>`: A string of all available letters for the puzzle (e.g., "abcdefghijkl").
@@ -59,7 +59,7 @@ Options:
 Example:
 
 ```bash
-npm run cli solve abcdefghijkl -m a -c z -d src/dictionary/scowl_100.txt
+npm run cli -- solve abcdefghijkl -m a -c z -d src/dictionary/scowl_100.txt
 ```
 
 ## Development
