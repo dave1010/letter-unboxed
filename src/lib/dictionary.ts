@@ -133,9 +133,12 @@ export class Dictionary {
       }
       if (!isValid) continue;
 
-      // Check if word uses only availableLetters
+      // Create a set of all letters that are allowed (available or required)
+      const allowedLettersSet = new Set([...availableLettersSet, ...requiredLettersSet]);
+
+      // Check if word uses only allowed letters (available or required)
       for (const char of word) {
-        if (!availableLettersSet.has(char)) {
+        if (!allowedLettersSet.has(char)) {
           isValid = false;
           break;
         }
