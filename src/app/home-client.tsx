@@ -82,7 +82,7 @@ export default function Home({ wordList }: HomeProps) {
             <p className="mb-4 text-teal-50">This tool helps you find words based on various criteria. Here&apos;s how:</p>
             <ul className="list-disc list-inside space-y-2 text-teal-100">
               <li><strong>Filter by Starting/Ending Letters:</strong> Enter a letter in the &apos;Starts with&apos; or &apos;Ends with&apos; fields.</li>
-              <li><strong>Filter by Letter Groups:</strong> Enter groups of letters that must appear in the word (e.g., "th", "ing"). Separate multiple groups with commas.</li>
+              <li><strong>Filter by Letter Groups:</strong> Enter groups of letters that must appear in the word (e.g., &quot;th&quot;, &quot;ing&quot;). Separate multiple groups with commas.</li>
               <li><strong>View Results:</strong> Matching words will appear below.</li>
               <li><strong>Sort Results:</strong> Use the controls to sort the results alphabetically or by length.</li>
               <li><strong>Limit Results:</strong> Only the first 1000 results are shown for performance.</li>

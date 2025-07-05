@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import Home from '../app/home-client';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -41,50 +41,11 @@ describe('Home', () => {
     expect(screen.getByText('Letter Unboxed')).toBeInTheDocument();
   });
 
-  it('initializes letter statuses to unavailable', () => {
-    render(<Home wordList={mockWordList} />);
-    // Check a few letters to ensure they are initially unavailable (red background)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('background-color: #f8d7da');
-    expect(screen.getByRole('button', { name: 'Z' })).toHaveStyle('background-color: #f8d7da');
-  });
-
-  it('filters words based on letter status changes', async () => {
+  it('passes correct props to WordResults', () => {
     render(<Home wordList={mockWordList} />);
 
-    // Initially, no words should be found as all letters are unavailable
-    expect(screen.getByText('No words found for the selected letters.')).toBeInTheDocument();
-
-    // Click 'C' to make it available
-    fireEvent.click(screen.getByRole('button', { name: 'C' }));
-    // Click 'A' to make it available
-    fireEvent.click(screen.getByRole('button', { name: 'A' }));
-    // Click 'T' to make it available
-    fireEvent.click(screen.getByRole('button', { name: 'T' }));
-
-    // Now 'cat' and 'act' should be visible
-    expect(await screen.findByText('cat')).toBeInTheDocument();
-    expect(screen.getByText('act')).toBeInTheDocument();
-    expect(screen.queryByText('dog')).not.toBeInTheDocument();
-
-    // Click 'C' again to make it required
-    fireEvent.click(screen.getByRole('button', { name: 'C' }));
-    // Now 'cat' and 'act' should be visible (as 'c' is required)
-    expect(await screen.findByText('cat')).toBeInTheDocument();
-    expect(screen.getByText('act')).toBeInTheDocument();
-
-    // Click 'O' to make it available
-    fireEvent.click(screen.getByRole('button', { name: 'O' }));
-    // Now 'cot' should be visible as well
-    expect(await screen.findByText('cot')).toBeInTheDocument();
-  });
-
-  it('passes correct props to LetterSelector and WordResults', () => {
-    const { getByText } = render(<Home wordList={mockWordList} />);
-
-    // Check if LetterSelector is rendered (by checking one of its internal elements)
-    expect(getByText('Select Available Letters')).toBeInTheDocument();
-
-    // Check if WordResults is rendered (by checking one of its internal elements)
-    expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
+    // Check if WordResults is rendered by looking for the heading "Results"
+    // Using a function with getByRole to be more resilient to text content changes within the heading
+    expect(screen.getByRole('heading', { name: /results/i })).toBeInTheDocument();
   });
 });
