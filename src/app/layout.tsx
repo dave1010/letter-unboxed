@@ -15,7 +15,9 @@ export default function RootLayout({
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
-      <body>{children}</body>
+      <body className="min-h-screen bg-gradient-to-br from-purple-900 via-gray-900 to-black bg-[length:200%_200%] animate-gradient-slow text-gray-100">
+        {children}
+      </body>
     </html>
   )
 }

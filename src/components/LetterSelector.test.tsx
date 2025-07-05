@@ -33,12 +33,12 @@ describe('LetterSelector', () => {
     render(<LetterSelector letterStatuses={initialLetterStatuses} onLetterClick={onLetterClick} />);
 
     // Check 'excluded' (default)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-200', 'text-rose-700');
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-700', 'text-rose-100');
 
     // Check 'available'
-    expect(screen.getByRole('button', { name: 'B' })).toHaveClass('bg-blue-200', 'text-blue-700');
+    expect(screen.getByRole('button', { name: 'B' })).toHaveClass('bg-cyan-700', 'text-cyan-100');
 
     // Check 'required-anywhere'
-    expect(screen.getByRole('button', { name: 'C' })).toHaveClass('bg-green-200', 'text-green-700', 'border-b-4');
+    expect(screen.getByRole('button', { name: 'C' })).toHaveClass('bg-lime-600', 'text-lime-100', 'border-b-4');
   });
 });

@@ -13,19 +13,19 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
   return (
     <div className="mb-6 text-center">
       <div className="flex flex-wrap justify-center gap-2 mb-4">
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-blue-200 text-blue-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-cyan-400 bg-cyan-700 text-white">
           Available
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-l-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-lime-400 bg-lime-700 text-white border-l-4">
           Required at Start
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-b-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-lime-400 bg-lime-600 text-white border-b-4">
           Required anywhere
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-r-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-lime-400 bg-lime-700 text-white border-r-4">
           Required at End
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-rose-200 text-rose-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-rose-400 bg-rose-700 text-white">
           Excluded
         </span>
       </div>
@@ -35,14 +35,14 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
           const base = 'px-4 py-2 text-lg font-bold rounded transition border';
           const statusClasses =
             status === 'available'
-              ? 'bg-blue-200 text-blue-700 border-blue-400'
+              ? 'bg-cyan-700 text-cyan-100 border-cyan-400'
               : status === 'required-start'
-              ? 'bg-green-200 text-green-700 border-green-400 border-l-4'
+              ? 'bg-lime-700 text-lime-100 border-lime-400 border-l-4'
               : status === 'required-anywhere'
-              ? 'bg-green-200 text-green-700 border-green-400 border-b-4'
+              ? 'bg-lime-600 text-lime-100 border-lime-400 border-b-4'
               : status === 'required-end'
-              ? 'bg-green-200 text-green-700 border-green-400 border-r-4'
-              : 'bg-rose-200 text-rose-700 border-rose-400';
+              ? 'bg-lime-700 text-lime-100 border-lime-400 border-r-4'
+              : 'bg-rose-700 text-rose-100 border-rose-400';
           return (
             <button
               key={char}
