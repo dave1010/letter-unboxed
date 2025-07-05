@@ -26,9 +26,9 @@ This phase focuses on getting the project foundation right, with automated testi
 - [x] Set up a test runner (e.g., Jest, Vitest) and add a placeholder test to ensure the CI pipeline is working.
 
 ### Deployment
-- [ ] Set up a Vercel project for deployment
-- [ ] Configure Vercel to create preview deployments for PRs
-- [ ] Configure automatic deployments from the main branch
+- [x] Set up a Vercel project for deployment
+- [x] Configure Vercel to create preview deployments for PRs
+- [x] Configure automatic deployments from the main branch
 
 ## Phase 2: Core Functionality & MVP
 
