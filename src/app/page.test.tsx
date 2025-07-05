@@ -1,9 +1,1 @@
-import { render, screen } from '@testing-library/react';
-import Home from './page';
-
-describe('Home', () => {
-  it('renders a welcome message', () => {
-    render(<Home />);
-    expect(screen.getByText('Welcome to Letter Unboxed!')).toBeInTheDocument();
-  });
-});
+import { render, screen } from '@testing-library/react';import Home from './page';import { vi } from 'vitest';import fs from 'fs';import path from 'path';describe('Home', () => {  beforeAll(() => {    vi.spyOn(fs, 'readFileSync').mockReturnValue('word1\nword2\nword3');    vi.spyOn(path, 'join').mockImplementation((...args) => args.join('/'));  });  afterAll(() => {    vi.restoreAllMocks();  });  it('renders a welcome message', async () => {    render(await Home());    expect(screen.getByText('Letter Unboxed')).toBeInTheDocument();  });});

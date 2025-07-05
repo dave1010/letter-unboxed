@@ -48,4 +48,13 @@ describe('Dictionary', () => {
     expect(dictionary.filterAvailable('lok')).toEqual(expect.arrayContaining(['look']));
     expect(dictionary.filterAvailable('col')).toEqual(expect.arrayContaining(['cool']));
   });
+
+  it('should correctly filter words with repeated letters based on available letters', () => {
+    const dictionary = new Dictionary('banana', 'bandana', 'apple', 'bookkeeper');
+    expect(dictionary.filterAvailable('banaa')).toEqual(expect.arrayContaining(['banana']));
+    expect(dictionary.filterAvailable('banada')).toEqual(expect.arrayContaining(['bandana']));
+    expect(dictionary.filterAvailable('aple')).toEqual(expect.arrayContaining(['apple']));
+    expect(dictionary.filterAvailable('bokepr')).toEqual(expect.arrayContaining(['bookkeeper']));
+    expect(dictionary.filterAvailable('bokeeper')).toEqual(expect.arrayContaining(['bookkeeper']));
+  });
 });
