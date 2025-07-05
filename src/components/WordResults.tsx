@@ -2,46 +2,50 @@ import React from 'react';
 
 interface WordResultsProps {
   results: string[];
-  resultCount: number;
-  onSortChange: (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => void;
+  resultCount?: number;
+  onSortChange?: (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => void;
 }
 
-const WordResults: React.FC<WordResultsProps> = ({ results, resultCount, onSortChange }) => {
+const WordResults: React.FC<WordResultsProps> = ({
+  results,
+  resultCount = results.length,
+  onSortChange = () => {},
+}) => {
   return (
-    <div style={{ borderTop: '1px solid #eee', paddingTop: '20px' }}>
-      <h2 style={{ color: '#555', textAlign: 'center', marginBottom: '15px' }}>Results ({resultCount})</h2>
-      <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-        <label htmlFor="sortOrder">Sort by: </label>
-        <select id="sortOrder" onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onSortChange(e.target.value as 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc')} style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}>
-          <option value="alphabetical-asc">Alphabetical (A-Z)</option>
-          <option value="alphabetical-desc">Alphabetical (Z-A)</option>
-          <option value="length-asc">Length (shortest first)</option>
-          <option value="length-desc">Length (longest first)</option>
-        </select>
+    <div className="border-t border-gray-200 pt-5">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-semibold text-gray-700">Results ({resultCount})</h2>
+        <div className="flex items-center space-x-2">
+          <label htmlFor="sortOrder" className="text-sm text-gray-600">Sort:</label>
+          <select
+            id="sortOrder"
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+              onSortChange(e.target.value as
+                | 'alphabetical-asc'
+                | 'alphabetical-desc'
+                | 'length-asc'
+                | 'length-desc')
+            }
+            className="px-2 py-1 border border-gray-300 rounded-md bg-white text-sm"
+          >
+            <option value="alphabetical-asc">A-Z</option>
+            <option value="alphabetical-desc">Z-A</option>
+            <option value="length-asc">Shortest</option>
+            <option value="length-desc">Longest</option>
+          </select>
+        </div>
       </div>
       {results.length === 0 && (
-        <p style={{ textAlign: 'center', color: '#777' }}>No words found for the selected letters.</p>
+        <p className="text-center text-gray-600">
+          No words found for the selected letters.
+        </p>
       )}
-      <ul style={{
-        listStyle: 'none',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-        gap: '10px',
-        maxHeight: '400px', // Fixed height
-        overflowY: 'auto', // Enable vertical scrolling
-        border: '1px solid #eee',
-        padding: '10px',
-        borderRadius: '5px',
-      }}>
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 max-h-96 overflow-y-auto border border-gray-200 p-2 rounded-md">
         {results.map((word) => (
-          <li key={word} style={{
-            background: '#f9f9f9',
-            border: '1px solid #eee',
-            borderRadius: '5px',
-            padding: '8px',
-            textAlign: 'center',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-          }}>
+          <li
+            key={word}
+            className="bg-gray-50 border border-gray-200 rounded-md p-2 text-center shadow-sm"
+          >
             {word}
           </li>
         ))}

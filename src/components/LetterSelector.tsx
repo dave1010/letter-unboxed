@@ -11,105 +11,46 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
   const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
   return (
-    <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-      <h2 style={{ color: '#555', marginBottom: '10px' }}>Select Available Letters</h2>
-      <div style={{ marginBottom: '10px' }}>
-        <span style={{
-          padding: '5px 10px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: '#cfe2ff',
-          color: '#055160',
-          marginRight: '5px',
-          marginLeft: '5px'
-        }}>Available</span>
-        <span style={{
-          padding: '5px 10px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: '#bfd5c4',
-          color: '#155724',
-          marginRight: '5px',
-          borderLeft: '4px solid #155724'
-        }}>Required at Start</span>
-        <span style={{
-          padding: '5px 10px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: '#d4edda',
-          color: '#155724',
-          marginRight: '5px',
-          borderBottom: '4px solid #155724'
-        }}>Required anywhere</span>
-        <span style={{
-          padding: '5px 10px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: '#e2f3e8',
-          color: '#155724',
-          marginRight: '5px',
-          borderRight: '4px solid #155724'
-        }}>Required at End</span>
-        <span style={{
-          padding: '5px 10px',
-          fontSize: '12px',
-          fontWeight: 'bold',
-          borderRadius: '5px',
-          border: '1px solid #ccc',
-          backgroundColor: '#f8d7da',
-          color: '#721c24',
-        }}>Excluded</span>
+    <div className="mb-6 text-center">
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-blue-200 text-blue-700">
+          Available
+        </span>
+        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-l-4 border-green-700">
+          Required at Start
+        </span>
+        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-b-4 border-green-700">
+          Required anywhere
+        </span>
+        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-r-4 border-green-700">
+          Required at End
+        </span>
+        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-rose-200 text-rose-700">
+          Excluded
+        </span>
       </div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px' }}>
+      <div className="flex flex-wrap justify-center gap-2">
         {alphabet.map((char) => {
           const status = letterStatuses[char];
-          let style: React.CSSProperties = {
-            padding: '10px 15px',
-            fontSize: '18px',
-            fontWeight: 'bold',
-            borderRadius: '5px',
-            cursor: 'pointer',
-            minWidth: '50px',
-            border: '1px solid #ccc',
-            borderLeft: '1px solid #ccc',
-            borderBottom: '1px solid #ccc',
-            borderRight: '1px solid #ccc'
-          };
-          if (status === 'available') {
-            style.backgroundColor = '#cfe2ff';
-            style.color = '#055160';
-          } else if (status === 'required-start') {
-            style.backgroundColor = '#bfd5c4';
-            style.color = '#155724';
-            style.borderLeft = '4px solid #155724';
-          } else if (status === 'required-anywhere') {
-            style.backgroundColor = '#d4edda';
-            style.color = '#155724';
-            style.borderBottom = '4px solid #155724';
-          } else if (status === 'required-end') {
-            style.backgroundColor = '#e2f3e8';
-            style.color = '#155724';
-            style.borderRight = '4px solid #155724';
-          } else { // excluded
-            style.backgroundColor = '#f8d7da';
-            style.color = '#721c24';
-          }
+          const base = 'px-4 py-2 text-lg font-bold rounded transition border';
+          const statusClasses =
+            status === 'available'
+              ? 'bg-blue-200 text-blue-700 border-blue-400'
+              : status === 'required-start'
+              ? 'bg-green-200 text-green-700 border-green-400 border-l-4'
+              : status === 'required-anywhere'
+              ? 'bg-green-200 text-green-700 border-green-400 border-b-4'
+              : status === 'required-end'
+              ? 'bg-green-200 text-green-700 border-green-400 border-r-4'
+              : 'bg-rose-200 text-rose-700 border-rose-400';
           return (
-          <button
-            key={char}
-            onClick={() => onLetterClick(char)}
-            style={style}
-          >
-            {char.toUpperCase()}
-          </button>
+            <button
+              key={char}
+              onClick={() => onLetterClick(char)}
+              className={`${base} ${statusClasses}`}
+            >
+              {char.toUpperCase()}
+            </button>
           );
         })}
       </div>

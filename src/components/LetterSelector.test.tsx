@@ -33,15 +33,12 @@ describe('LetterSelector', () => {
     render(<LetterSelector letterStatuses={initialLetterStatuses} onLetterClick={onLetterClick} />);
 
     // Check 'excluded' (default)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('background-color: #f8d7da');
-    expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('color: #721c24');
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-200', 'text-rose-700');
 
     // Check 'available'
-    expect(screen.getByRole('button', { name: 'B' })).toHaveStyle('background-color: #cfe2ff');
-    expect(screen.getByRole('button', { name: 'B' })).toHaveStyle('color: #055160');
+    expect(screen.getByRole('button', { name: 'B' })).toHaveClass('bg-blue-200', 'text-blue-700');
 
     // Check 'required-anywhere'
-    expect(screen.getByRole('button', { name: 'C' })).toHaveStyle('background-color: #d4edda');
-    expect(screen.getByRole('button', { name: 'C' })).toHaveStyle('color: #155724');
+    expect(screen.getByRole('button', { name: 'C' })).toHaveClass('bg-green-200', 'text-green-700', 'border-b-4');
   });
 });

@@ -44,8 +44,8 @@ describe('Home', () => {
   it('initializes letter statuses to unavailable', () => {
     render(<Home wordList={mockWordList} />);
     // Check a few letters to ensure they are initially unavailable (red background)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('background-color: #f8d7da');
-    expect(screen.getByRole('button', { name: 'Z' })).toHaveStyle('background-color: #f8d7da');
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-200');
+    expect(screen.getByRole('button', { name: 'Z' })).toHaveClass('bg-rose-200');
   });
 
   it('filters words based on letter status changes', async () => {
@@ -82,7 +82,7 @@ describe('Home', () => {
     const { getByText } = render(<Home wordList={mockWordList} />);
 
     // Check if LetterSelector is rendered (by checking one of its internal elements)
-    expect(getByText('Select Available Letters')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'A' })).toBeInTheDocument();
 
     // Check if WordResults is rendered (by checking one of its internal elements)
     expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
