@@ -12,7 +12,9 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
 
   return (
     <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-      <p style={{ marginBottom: '10px' }}>Key
+      <h2 style={{ color: '#555', marginBottom: '10px' }}>Select Available Letters</h2>
+      <p style={{ marginBottom: '15px', fontSize: '0.9em', color: '#666' }}>Click letters to cycle through: Available (blue) &rarr; Required (green) &rarr; Excluded (red)</p>
+      <div style={{ marginBottom: '10px' }}>
         <span style={{
           padding: '5px 10px',
           fontSize: '12px',
@@ -42,7 +44,8 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
           border: '1px solid #ccc',
           backgroundColor: '#f8d7da',
           color: '#721c24',
-        }}>Excluded</span></p>
+        }}>Excluded</span>
+      </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px' }}>
         {alphabet.map((char) => (
           <button

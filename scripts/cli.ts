@@ -69,7 +69,8 @@ export const solveCommandHandler = async (argv: any) => {
       async (argv) => {
         const result = await solveCommandHandler(argv);
         console.log(`Solving for letters: ${result.availableLetters}`);
-        console.log('\nMatching words:');
+        console.log(`
+Found ${result.matchingWords.length} matching words:`);
         result.matchingWords.forEach((word: string) => console.log(word));
 
         if (result.mustUse) {

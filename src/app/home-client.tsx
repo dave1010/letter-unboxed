@@ -20,6 +20,8 @@ export default function Home({ wordList }: HomeProps) {
     return initialStatuses;
   });
   const [results, setResults] = useState<string[]>([]);
+  const [showHelp, setShowHelp] = useState<boolean>(false);
+  const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('alphabetical-asc');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
@@ -41,11 +43,27 @@ export default function Home({ wordList }: HomeProps) {
       ).join('');
 
       const filteredWords = dictionary.filter(availableLetters, requiredLetters, unavailableLetters);
-      setResults(filteredWords);
+
+      const sortedWords = [...filteredWords];
+      switch (sortOrder) {
+        case 'alphabetical-asc':
+          sortedWords.sort();
+          break;
+        case 'alphabetical-desc':
+          sortedWords.sort().reverse();
+          break;
+        case 'length-asc':
+          sortedWords.sort((a, b) => a.length - b.length || a.localeCompare(b));
+          break;
+        case 'length-desc':
+          sortedWords.sort((a, b) => b.length - a.length || a.localeCompare(b));
+          break;
+      }
+      setResults(sortedWords.slice(0, 1000));
     } else {
       setResults([]);
     }
-  }, [letterStatuses, dictionary]);
+  }, [letterStatuses, dictionary, sortOrder]);
 
   const handleLetterClick = (char: string) => {
     setLetterStatuses((prevStatuses) => {
@@ -64,11 +82,35 @@ export default function Home({ wordList }: HomeProps) {
     });
   };
 
+  const handleSortChange = (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => {
+    setSortOrder(sortOrder);
+  };
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ color: '#333', textAlign: 'center' }}>Letter Unboxed</h1>
+      <h1 style={{ color: '#333', textAlign: 'center', fontSize: '2.5em', marginBottom: '20px', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>Letter Unboxed</h1>
+      <button onClick={() => setShowHelp(!showHelp)} style={{ display: 'block', margin: '0 auto 20px auto', padding: '10px 20px', fontSize: '1em', cursor: 'pointer', borderRadius: '5px', border: '1px solid #ccc', backgroundColor: '#f0f0f0' }}>
+        {showHelp ? 'Hide Help' : 'Show Help'}
+      </button>
+      {showHelp && (
+        <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: '8px', padding: '20px', marginBottom: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
+          <h2 style={{ textAlign: 'center', color: '#555', marginBottom: '15px' }}>How to Use</h2>
+          <p>This tool helps you solve Letter Boxed puzzles. Here&apos;s how:</p>
+          <ul style={{ listStyle: 'disc', marginLeft: '20px' }}>
+            <li style={{ marginBottom: '10px' }}><strong>Select Letters:</strong> Click on the letters below to cycle through their states:</li>
+            <ul style={{ listStyle: 'circle', marginLeft: '20px', marginBottom: '10px' }}>
+              <li><span style={{ fontWeight: 'bold', color: '#055160' }}>Available (Blue):</span> The letter can be used in words.</li>
+              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required (Green):</span> The letter *must* be used in every word.</li>
+              <li><span style={{ fontWeight: 'bold', color: '#721c24' }}>Excluded (Red):</span> The letter *cannot* be used in words.</li>
+            </ul>
+            <li style={{ marginBottom: '10px' }}><strong>View Results:</strong> As you select letters, matching words will appear below.</li>
+            <li style={{ marginBottom: '10px' }}><strong>Sort Results:</strong> Use the dropdown to sort the results alphabetically or by length.</li>
+            <li><strong>Limit Results:</strong> Only the first 1000 results are shown for performance.</li>
+          </ul>
+        </div>
+      )}
       <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
-      <WordResults results={results} />
+      <WordResults results={results} resultCount={results.length} onSortChange={handleSortChange} />
     </div>
   );
 }

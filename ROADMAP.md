@@ -81,9 +81,9 @@ This phase builds on the MVP to add more powerful features and improve the user 
 
 ### Results view (web and CLI)
 
-- [ ] Show count of results
-- [ ] Sorting results A-Z, length, asc/desc
-- [ ] Limit (defailt to 1000 just on web)
+- [x] Show count of results
+- [x] Sorting results A-Z, length, asc/desc
+- [x] Limit (defailt to 1000 just on web)
 
 ### Advanced Filtering
 - [ ] Implement filter: word must start with a specific letter
@@ -96,11 +96,11 @@ This phase builds on the MVP to add more powerful features and improve the user 
 - [ ] Consider other features (user task)
 
 ### UI/UX Improvements
-- [ ] Design a more polished and intuitive user interface
-- [ ] Text logo
-- [ ] About / help popup
-- [ ] Implement a better way to display a large number of results (e.g., scrolling just the div)
-- [ ] Make the UI responsive for different screen sizes
+- [x] Design a more polished and intuitive user interface
+- [x] Text logo
+- [x] About / help popup
+- [x] Implement a better way to display a large number of results (e.g., scrolling just the div)
+- [x] Make the UI responsive for different screen sizes
 
 ### Offline Support
 - [ ] Implement service workers to cache the application shell and data

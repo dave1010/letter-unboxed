@@ -82,9 +82,9 @@ describe('Home', () => {
     const { getByText } = render(<Home wordList={mockWordList} />);
 
     // Check if LetterSelector is rendered (by checking one of its internal elements)
-    expect(getByText('Key')).toBeInTheDocument();
+    expect(getByText('Select Available Letters')).toBeInTheDocument();
 
     // Check if WordResults is rendered (by checking one of its internal elements)
-    expect(getByText('Results')).toBeInTheDocument();
+    expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
   });
 });
