@@ -33,12 +33,26 @@ describe('LetterSelector', () => {
     render(<LetterSelector letterStatuses={initialLetterStatuses} onLetterClick={onLetterClick} />);
 
     // Check 'excluded' (default)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('from-rose-500', 'to-rose-700', 'text-white');
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-gray-600', 'text-gray-300', 'border-gray-700');
 
     // Check 'available'
-    expect(screen.getByRole('button', { name: 'B' })).toHaveClass('from-blue-500', 'to-blue-700', 'text-white');
+    expect(screen.getByRole('button', { name: 'B' })).toHaveClass(
+      'bg-gradient-to-br',
+      'from-blue-500',
+      'to-blue-700',
+      'text-white',
+      'border-blue-700',
+      'text-center'
+    );
 
     // Check 'required-anywhere'
-    expect(screen.getByRole('button', { name: 'C' })).toHaveClass('from-green-500', 'to-green-700', 'text-white', 'border-b-4');
+    expect(screen.getByRole('button', { name: 'C' })).toHaveClass(
+      'bg-gradient-to-br',
+      'from-green-600',
+      'to-green-800',
+      'text-white',
+      'border-green-800',
+      'text-center'
+    );
   });
 });

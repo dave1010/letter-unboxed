@@ -22,7 +22,7 @@ export default function Home({ wordList }: HomeProps) {
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [letterGroups, setLetterGroups] = useState<string>('');
-  const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('alphabetical-asc');
+  const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('length-desc');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
@@ -113,7 +113,7 @@ export default function Home({ wordList }: HomeProps) {
         <button
           aria-label={showHelp ? 'Close help' : 'Open help'}
           onClick={() => setShowHelp(!showHelp)}
-          className="text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="text-white bg-blue-600 hover:bg-blue-700 h-10 w-10 flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           ?
         </button>
@@ -122,7 +122,7 @@ export default function Home({ wordList }: HomeProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-lg">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800">How to Use</h2>
+            <h2 className="text-2xl font-semibold text-gray-800">About</h2>
               <button
                 aria-label="Close help"
                 onClick={() => setShowHelp(false)}
@@ -132,24 +132,12 @@ export default function Home({ wordList }: HomeProps) {
               </button>
             </div>
             <div className="space-y-2 text-gray-700">
-              <p>This tool helps you solve Letter Boxed puzzles. Here&apos;s how:</p>
-              <ul className="list-disc list-inside">
-                <li>
-                  <strong>Select Letters:</strong> Click on the letters below to cycle through their states.
-                </li>
-                <li>
-                  <strong>View Results:</strong> Matching words appear below in real time.
-                </li>
-                <li>
-                  <strong>Sort Results:</strong> Use the sort menu to order results alphabetically or by length.
-                </li>
-                <li>
-                  <strong>Letter Groups:</strong> Define groups with comma-separated letters (e.g., <code>abc,def</code>).
-                </li>
-                <li>
-                  <strong>Performance:</strong> Only the first 1000 results are shown for speed.
-                </li>
-              </ul>
+              <p>Explore potential Letter Boxed words!</p>
+              <p>
+                Tap letters to cycle through making them available for words,
+                requiring them in words, or excluding them.
+              </p>
+              <p>Github (https://github.com/dave1010/letter-unboxed)</p>
             </div>
           </div>
         </div>
@@ -171,6 +159,7 @@ export default function Home({ wordList }: HomeProps) {
         results={results}
         resultCount={results.length}
         onSortChange={handleSortChange}
+        sortOrder={sortOrder}
       />
     </div>
   );

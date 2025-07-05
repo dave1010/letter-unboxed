@@ -7,53 +7,60 @@ interface LetterSelectorProps {
   onLetterClick: (char: string) => void;
 }
 
-const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLetterClick }) => {
-  const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+	const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLetterClick }) => {
+	  const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
 
   return (
     <div className="mb-6 text-center">
       <div className="flex flex-wrap justify-center gap-2 mb-4">
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-700 bg-gradient-to-br from-blue-500 to-blue-700 text-white">
+        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-blue-700 bg-gradient-to-br from-blue-500 to-blue-700 text-white">
           Available
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-700 bg-gradient-to-br from-green-500 to-green-700 text-white border-l-4 border-green-300">
-          Required at Start
+        <span className="px-3 pl-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+          Start
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-700 bg-gradient-to-br from-green-500 to-green-700 text-white border-b-4 border-green-300">
-          Required anywhere
+        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+          Must contain
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-700 bg-gradient-to-br from-green-500 to-green-700 text-white border-r-4 border-green-300">
-          Required at End
+        <span className="px-3 pr-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+          End
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-700 bg-gradient-to-br from-rose-500 to-rose-700 text-white">
+        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300">
           Excluded
         </span>
       </div>
-      <div className="flex flex-wrap justify-center gap-2">
-        {alphabet.map((char) => {
-          const status = letterStatuses[char];
-          const base = 'px-4 py-2 text-lg font-bold rounded transition border shadow-md hover:scale-105';
-          const statusClasses =
-            status === 'available'
-              ? 'bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-700'
-              : status === 'required-start'
-              ? 'bg-gradient-to-br from-green-500 to-green-700 text-white border-green-700 border-l-4'
-              : status === 'required-anywhere'
-              ? 'bg-gradient-to-br from-green-500 to-green-700 text-white border-green-700 border-b-4'
-              : status === 'required-end'
-              ? 'bg-gradient-to-br from-green-500 to-green-700 text-white border-green-700 border-r-4'
-              : 'bg-gradient-to-br from-rose-500 to-rose-700 text-white border-rose-700';
-          return (
-            <button
-              key={char}
-              onClick={() => onLetterClick(char)}
-              className={`${base} ${statusClasses}`}
-            >
-              {char.toUpperCase()}
-            </button>
-          );
-        })}
-      </div>
+	      <div className="space-y-2 w-full max-w-lg mx-auto">
+	        {rows.map((row) => (
+	          <div key={row} className="grid grid-cols-10 gap-1 w-full">
+	            {row.split('').map((char) => {
+	              const status = letterStatuses[char];
+	              const base =
+	                'py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105';
+	              const alignClass =
+	                status === 'required-start'
+	                  ? 'text-left pl-0'
+	                  : status === 'required-end'
+	                  ? 'text-right pr-0'
+	                  : 'text-center';
+	              const statusClasses =
+	                status === 'available'
+	                  ? `bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-700 ${alignClass}`
+	                  : status.startsWith('required')
+	                  ? `bg-gradient-to-br from-green-600 to-green-800 text-white border-green-800 ${alignClass}`
+	                  : `bg-gray-600 text-gray-300 border-gray-700 ${alignClass}`;
+	              return (
+	                <button
+	                  key={char}
+	                  onClick={() => onLetterClick(char)}
+	                  className={`${base} ${statusClasses}`}
+	                >
+	                  {char.toUpperCase()}
+	                </button>
+	              );
+	            })}
+	          </div>
+	        ))}
+	      </div>
     </div>
   );
 };

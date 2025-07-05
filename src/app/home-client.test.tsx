@@ -43,9 +43,17 @@ describe('Home', () => {
 
   it('initializes letter statuses to unavailable', () => {
     render(<Home wordList={mockWordList} />);
-    // Check a few letters to ensure they are initially unavailable (red background)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('from-rose-500', 'to-rose-700');
-    expect(screen.getByRole('button', { name: 'Z' })).toHaveClass('from-rose-500', 'to-rose-700');
+    // Check a few letters to ensure they are initially unavailable (greyed out)
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass(
+      'bg-gray-600',
+      'text-gray-300',
+      'border-gray-700'
+    );
+    expect(screen.getByRole('button', { name: 'Z' })).toHaveClass(
+      'bg-gray-600',
+      'text-gray-300',
+      'border-gray-700'
+    );
   });
 
   it('filters words based on letter status changes', async () => {

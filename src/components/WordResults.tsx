@@ -4,12 +4,14 @@ interface WordResultsProps {
   results: string[];
   resultCount?: number;
   onSortChange?: (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => void;
+  sortOrder?: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc';
 }
 
 const WordResults: React.FC<WordResultsProps> = ({
   results,
   resultCount = results.length,
   onSortChange = () => {},
+  sortOrder = 'alphabetical-asc',
 }) => {
   return (
     <div className="border-t border-gray-600 pt-5">
@@ -17,19 +19,20 @@ const WordResults: React.FC<WordResultsProps> = ({
         <h2 className="text-2xl font-semibold text-gray-200">Results ({resultCount})</h2>
         <div className="flex items-center space-x-2">
           <label htmlFor="sortOrder" className="text-sm text-gray-300">Sort:</label>
-          <select
-            id="sortOrder"
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-              onSortChange(
-                e.target.value as
-                  | 'alphabetical-asc'
-                  | 'alphabetical-desc'
-                  | 'length-asc'
-                  | 'length-desc'
-              )
-            }
-            className="px-2 py-1 border border-gray-600 rounded-md bg-gray-800 text-sm text-white"
-          >
+        <select
+          id="sortOrder"
+          value={sortOrder}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+            onSortChange(
+              e.target.value as
+                | 'alphabetical-asc'
+                | 'alphabetical-desc'
+                | 'length-asc'
+                | 'length-desc'
+            )
+          }
+          className="px-2 py-1 border border-gray-600 rounded-md bg-gray-800 text-sm text-white"
+        >
             <option value="alphabetical-asc">A-Z</option>
             <option value="alphabetical-desc">Z-A</option>
             <option value="length-asc">Shortest</option>
