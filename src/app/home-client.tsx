@@ -9,7 +9,13 @@ interface HomeProps {
 
 export default function Home({ wordList }: HomeProps) {
   type LetterStatus = 'available' | 'required' | 'unavailable';
-  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>({});
+  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => {
+    const initialStatuses: Record<string, LetterStatus> = {};
+    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
+      initialStatuses[char] = 'unavailable';
+    });
+    return initialStatuses;
+  });
   const [results, setResults] = useState<string[]>([]);
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
@@ -42,14 +48,14 @@ export default function Home({ wordList }: HomeProps) {
     setLetterStatuses((prevStatuses) => {
       const currentStatus = prevStatuses[char];
       let newStatus: LetterStatus;
-      if (currentStatus === 'available') {
+      if (currentStatus === 'unavailable') {
+        newStatus = 'available';
+      } else if (currentStatus === 'available') {
         newStatus = 'required';
       } else if (currentStatus === 'required') {
         newStatus = 'unavailable';
-      } else if (currentStatus === 'unavailable') {
-        newStatus = 'available';
       } else {
-        newStatus = 'available'; // Default to available if not set
+        newStatus = 'unavailable'; // Default to unavailable if not set
       }
       return { ...prevStatuses, [char]: newStatus };
     });
@@ -62,7 +68,37 @@ export default function Home({ wordList }: HomeProps) {
       <h1 style={{ color: '#333', textAlign: 'center' }}>Letter Unboxed</h1>
 
       <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-        <p style={{ marginBottom: '10px' }}>Click letters to cycle through states:</p>
+        <p style={{ marginBottom: '10px' }}>Key 
+          <span style={{
+            padding: '5px 10px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            backgroundColor: '#cfe2ff',
+            color: '#055160',
+            marginRight: '5px',
+            marginLeft: '5px'
+          }}>Available</span> 
+          <span style={{
+            padding: '5px 10px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            backgroundColor: '#d4edda',
+            color: '#155724',
+            marginRight: '5px'
+          }}>Required</span> 
+          <span style={{
+            padding: '5px 10px',
+            fontSize: '12px',
+            fontWeight: 'bold',
+            borderRadius: '5px',
+            border: '1px solid #ccc',
+            backgroundColor: '#f8d7da',
+            color: '#721c24',
+          }}>Excluded</span></p>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '5px' }}>
           {alphabet.map((char) => (
             <button
@@ -81,13 +117,13 @@ export default function Home({ wordList }: HomeProps) {
                     ? '#d4edda' // Light green for required
                     : letterStatuses[char] === 'unavailable'
                     ? '#f8d7da' // Light red for unavailable
-                    : '#e2e6ea', // Light gray for available
+                    : '#cfe2ff', // Light blue for available
                 color:
                   letterStatuses[char] === 'required'
                     ? '#155724'
                     : letterStatuses[char] === 'unavailable'
                     ? '#721c24'
-                    : '#383d41',
+                    : '#055160', // Dark blue for available
               }}
             >
               {char.toUpperCase()}
