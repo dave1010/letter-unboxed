@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { solveCommandHandler } from '../scripts/cli'; // Import the exported handler
+import { solveCommandHandler } from './cli'; // Import the exported handler
 import * as fs from 'fs';
 
 // Mock fs.readFileSync

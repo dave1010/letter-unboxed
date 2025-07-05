@@ -1,24 +1,27 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { Dictionary } from '../src/lib/dictionary.ts';
+import { Dictionary } from '../src/lib/dictionary';
 import * as fs from 'fs';
 
 const defaultDictionaryPath = './src/dictionary/scowl_35.txt';
 
 export const solveCommandHandler = async (argv: any) => {
-  const defaultDictionaryPath = './src/dictionary/scowl_35.txt';
-  const dictionaryPath = argv.dictionary as string || defaultDictionaryPath;
+  const dictionaryPath = (argv.dictionary as string) || defaultDictionaryPath;
   let dictionary: Dictionary;
   try {
     const dictionaryContent = fs.readFileSync(dictionaryPath, 'utf-8');
-    dictionary = new Dictionary(...dictionaryContent.split('\n').filter(word => word.length > 0));
+    dictionary = new Dictionary(
+      ...dictionaryContent
+        .split('\n')
+        .filter(word => word.length > 0)
+    );
   } catch (error) {
     console.error(`Error loading dictionary from ${dictionaryPath}:`, error);
     return {
       matchingWords: [],
-      availableLetters: argv.letters,
-      mustUse: argv['must-use'],
-      cannotUse: argv['cannot-use'],
+      availableLetters: (argv.letters as string).toLowerCase(),
+      mustUse: argv.mustUse,
+      cannotUse: argv.cannotUse,
     };
   }
 
@@ -41,13 +44,13 @@ export const solveCommandHandler = async (argv: any) => {
 
   return {
     matchingWords,
-    availableLetters: argv.letters,
-    mustUse: argv['must-use'],
-    cannotUse: argv['cannot-use'],
+    availableLetters,
+    mustUse: mustUseLetters || undefined,
+    cannotUse: cannotUseLetters || undefined,
   };
 };
 
-if (require.main === module) {
+if (typeof require !== 'undefined' && require.main === module) {
   yargs(hideBin(process.argv))
     .command(
       'solve <letters>',
@@ -74,26 +77,21 @@ if (require.main === module) {
           default: defaultDictionaryPath,
         });
       },
-      solveCommandHandler
+      async (argv) => {
+        const result = await solveCommandHandler(argv);
+        console.log(`Solving for letters: ${result.availableLetters}`);
+        console.log('\nMatching words:');
+        result.matchingWords.forEach((word: string) => console.log(word));
+
+        if (result.mustUse) {
+          console.log(`Must use: ${result.mustUse}`);
+        }
+        if (result.cannotUse) {
+          console.log(`Cannot use: ${result.cannotUse}`);
+        }
+      }
     )
     .help()
     .alias('h', 'help')
-    .parse(process.argv.slice(2), {}, (err, argv, output) => {
-      if (output) {
-        console.log(output);
-      }
-      if (argv && !err) {
-        const { matchingWords, availableLetters, mustUse, cannotUse } = argv as any;
-        console.log(`Solving for letters: ${availableLetters}`);
-        console.log('\nMatching words:');
-        matchingWords.forEach((word: string) => console.log(word));
-
-        if (mustUse) {
-          console.log(`Must use: ${mustUse}`);
-        }
-        if (cannotUse) {
-          console.log(`Cannot use: ${cannotUse}`);
-        }
-      }
-    });
+    .parse();
 }
