@@ -3,40 +3,49 @@ import { Dictionary } from '../lib/dictionary';
 
 describe('Dictionary', () => {
   it('should correctly identify if a word exists in the dictionary', () => {
-    const wordList = ['apple', 'banana', 'apricot', 'bandana', 'orange'];
-    const dictionary = new Dictionary(wordList);
+    const dictionary = new Dictionary('apple', 'banana', 'apricot', 'bandana', 'orange');
     expect(dictionary.hasWord('apple')).toBe(true);
     expect(dictionary.hasWord('grape')).toBe(false);
+    expect(dictionary.hasWord('Apple')).toBe(true); // Case insensitivity
   });
 
-  it('should filter words based on available letters', () => {
-    const wordList = ['cat', 'dog', 'cot', 'act', 'tac', 'car'];
-    const dictionary = new Dictionary(wordList);
-    const filteredWords = dictionary.filterWords('cat');
-    expect(filteredWords).toEqual(expect.arrayContaining(['cat', 'act', 'tac']));
-    expect(filteredWords).not.toEqual(expect.arrayContaining(['dog', 'cot', 'car']));
-    expect(filteredWords.length).toBe(3);
+  it('should filter words based on available letters (filterAvailable)', () => {
+    const dictionary = new Dictionary('cat', 'dog', 'cot', 'act', 'tac', 'car', 'foo');
+    expect(dictionary.filterAvailable('cat')).toEqual(expect.arrayContaining(['cat', 'act', 'tac']));
+    expect(dictionary.filterAvailable('CAT')).toEqual(expect.arrayContaining(['cat', 'act', 'tac'])); // Case insensitivity
+    expect(dictionary.filterAvailable('fo')).toEqual(expect.arrayContaining(['foo']));
+    expect(dictionary.filterAvailable('xyz')).toEqual([]);
+  });
+
+  it('should filter words based on unavailable letters (filterUnavailable)', () => {
+    const dictionary = new Dictionary('apple', 'banana', 'apricot', 'bandana', 'orange');
+    expect(dictionary.filterUnavailable('p')).toEqual(expect.arrayContaining(['banana', 'bandana', 'orange']));
+    expect(dictionary.filterUnavailable('P')).toEqual(expect.arrayContaining(['banana', 'bandana', 'orange'])); // Case insensitivity
+    expect(dictionary.filterUnavailable('xyz')).toEqual(expect.arrayContaining(['apple', 'banana', 'apricot', 'bandana', 'orange']));
+    expect(dictionary.filterUnavailable('a')).toEqual([]);
+  });
+
+  it('should filter words based on available and required letters (filterAvailableRequire)', () => {
+    const dictionary = new Dictionary('apple', 'banana', 'apricot', 'bandana', 'orange', 'grape');
+    expect(dictionary.filterAvailableRequire('apricot', 'a')).toEqual(expect.arrayContaining(['apricot']));
+    expect(dictionary.filterAvailableRequire('apricot', 'A')).toEqual(expect.arrayContaining(['apricot'])); // Case insensitivity
+    expect(dictionary.filterAvailableRequire('abfor', 'ab')).toEqual([]);
+    expect(dictionary.filterAvailableRequire('apple', 'z')).toEqual([]);
+    expect(dictionary.filterAvailableRequire('apple', 'p')).toEqual(expect.arrayContaining(['apple']));
+  });
+
+  it('should handle empty dictionary', () => {
+    const dictionary = new Dictionary();
+    expect(dictionary.hasWord('anyword')).toBe(false);
+    expect(dictionary.filterAvailable('abc')).toEqual([]);
+    expect(dictionary.filterUnavailable('abc')).toEqual([]);
+    expect(dictionary.filterAvailableRequire('abc', 'a')).toEqual([]);
   });
 
   it('should handle words with repeated letters', () => {
-    const wordList = ['book', 'look', 'cool'];
-    const dictionary = new Dictionary(wordList);
-    const filteredWords = dictionary.filterWords('boko');
-    expect(filteredWords).toEqual(expect.arrayContaining(['book']));
-    expect(filteredWords).not.toEqual(expect.arrayContaining(['look', 'cool']));
-    expect(filteredWords.length).toBe(1);
-  });
-
-  it('should return an empty array when filtering with no available letters', () => {
-    const wordList = ['cat', 'dog', 'cot'];
-    const dictionary = new Dictionary(wordList);
-    const filteredWords = dictionary.filterWords('');
-    expect(filteredWords).toEqual([]);
-  });
-
-  it('should correctly initialize with an empty word list', () => {
-    const dictionary = new Dictionary([]);
-    expect(dictionary.hasWord('anyword')).toBe(false);
-    expect(dictionary.filterWords('abc')).toEqual([]);
+    const dictionary = new Dictionary('book', 'look', 'cool');
+    expect(dictionary.filterAvailable('bok')).toEqual(expect.arrayContaining(['book']));
+    expect(dictionary.filterAvailable('lok')).toEqual(expect.arrayContaining(['look']));
+    expect(dictionary.filterAvailable('col')).toEqual(expect.arrayContaining(['cool']));
   });
 });

@@ -3,11 +3,13 @@
 This document outlines the development plan for the "Letter Unboxed" tool.
 
 Check tasks only when they are *fully* complete. I.e. not just changing code.
-A task is only complete when you have seen the output of a passing test.
-If tangible progress has been made but a task is not complete then split up the task.
 
-Mark a checkbox as [?] if tangible work has been done but there is a problem and
-it can't be completed properly.
+- A task is only complete [x] when you have seen the output of a passing test, docs updated, etc.
+  If tangible progress has been made but a task is not complete then split the task into 2 or more tasks.
+- Mark a checkbox as [.] if the code is there but you haven't met the Definition of Done.
+  Never do this, unless explicitly asked!
+- Mark a checkbox as [?] if tangible work has been done but there is a problem and
+  it can't be completed properly.
 
 Keep README.md up to date with how to run/use the project.
 
@@ -38,9 +40,10 @@ This phase focuses on getting the basic, essential features working to have a us
 ### Dictionary Management
 - [x] Researched and found a suitable, permissively licensed word list (en-wl/wordlist)
 - [x] Created a smaller, curated word list for development and testing (scowl_35.txt - 43k words)
+- [x] Make a 100 word dictionary file for other tests
 - [x] Defined a format for the dictionary: a plain text file with one word per line. This can be loaded into a JavaScript Set for efficient lookups.
 - [ ] Write a script to process the raw word list into the defined format
-- [ ] Create a robust way to load dictionaries so its available to a CLI script (and later web)
+- [x] Create a robust way to load dictionaries so its available to a CLI script (and later web)
 - [ ] Create some test lookup query / regex that mimmick the functionality we'll create later
 - [x] Run some performance tests to ensure a smaller dict can be searched in under 500ms
 - [ ] Research suitable dictionary size for production use (extensive perf testing needed)
@@ -54,10 +57,10 @@ This phase focuses on getting the basic, essential features working to have a us
 - [ ] Ensure this will be suitable format for future phases
 
 ### Basic CLI
-- [ ] Set up a basic CLI entry point (e.g., using `commander` or `yargs`)
-- [ ] Implement CLI command to take letters as input
-- [ ] Implement CLI flags for "must use" and "can't use" letters
-- [ ] Print matching words to the console
+- [x] Set up a basic CLI entry point (e.g., using `commander` or `yargs`)
+- [x] Implement CLI command to take letters as input
+- [x] Implement CLI flags for "must use" and "can't use" letters
+- [x] Print matching words to the console
 
 
 ### Basic Web UI (MVP)

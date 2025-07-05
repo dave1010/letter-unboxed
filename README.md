@@ -41,6 +41,27 @@ To run the tests with UI:
 npm run test:ui
 ```
 
+## CLI Usage
+
+To use the command-line interface, run:
+
+```bash
+npm run cli solve <letters> [options]
+```
+
+- `<letters>`: A string of all available letters for the puzzle (e.g., "abcdefghijkl").
+
+Options:
+  - `--must-use <letters>`, `-m <letters>`: Letters that must be present in the solution.
+  - `--cannot-use <letters>`, `-c <letters>`: Letters that cannot be present in the solution.
+  - `--dictionary <path>`, `-d <path>`: Path to a custom dictionary file (e.g., `src/dictionary/scowl_100.txt`). Defaults to `src/dictionary/scowl_35.txt`.
+
+Example:
+
+```bash
+npm run cli solve abcdefghijkl -m a -c z -d src/dictionary/scowl_100.txt
+```
+
 ## Development
 
 This project is a Next.js application bootstrapped with `create-next-app` and uses TypeScript, Tailwind CSS, and Vitest for testing. Continuous Integration is set up with GitHub Actions.

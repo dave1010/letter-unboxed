@@ -7,12 +7,12 @@ describe('Dictionary Performance', () => {
   it('should filter a large word list efficiently', () => {
     const scowlPath = join(__dirname, '../../src/dictionary/scowl_35.txt');
     const wordList = readFileSync(scowlPath, 'utf-8').split('\n').filter(Boolean);
-    const dictionary = new Dictionary(wordList);
+    const dictionary = new Dictionary(...wordList);
 
     const availableLetters = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'; // All letters, repeated to allow for words with multiple instances of the same letter
 
     const startTime = performance.now();
-    const filteredWords = dictionary.filterWords(availableLetters);
+    const filteredWords = dictionary.filterAvailable(availableLetters);
     const endTime = performance.now();
 
     const duration = endTime - startTime;

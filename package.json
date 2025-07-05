@@ -2,18 +2,23 @@
   "name": "letterunbox",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "NEXT_SWC_BINARY_PATH= next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "vitest run",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui",
+    "cli": "ts-node scripts/cli.ts --"
   },
   "dependencies": {
+    "@types/yargs": "^17.0.33",
     "next": "^15.3.5",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "ts-node": "^10.9.2",
+    "yargs": "^18.0.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.0",
