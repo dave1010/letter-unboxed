@@ -102,6 +102,22 @@ This phase builds on the MVP to add more powerful features and improve the user 
 - [x] Implement a better way to display a large number of results (e.g., scrolling just the div)
 - [x] Make the UI responsive for different screen sizes
 
+### Styling
+- [ ] Make the questionmark button a circle, not oval
+- [ ] Replace "How to use" with "About"
+- [ ] Remove copy "This tool helps you solve Letter Boxed puzzles. Here's how:" and replace with
+      "Explore potential Letter Boxed words!
+
+      Tap letters to cycle through making them available for words, requiring them in words,
+      or excluding them.
+      
+      Github (https://github.com/dave1010/letter-unboxed)"
+- [ ] Make the red excluded state not so bright. Maybe darker red/grey - almost a disabled state colour.
+- [ ] Make the green required state a bit darker, so the white text is more visible.
+- [ ] Make the green state border more visible (white) and ensure the letters dont jump as border size changes.
+- [ ] Order the letters like a qwerty keyboard. Centered. 100% width on phones, sensible max width on big screens.
+- [ ] Sort by longest by default
+
 ### Offline Support
 - [ ] Implement service workers to cache the application shell and data
 - [ ] Ensure the application is fully functional without an internet connection after the first visit
