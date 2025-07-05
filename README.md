@@ -91,8 +91,10 @@ eg words must start or end with specific letter
 
 ## Display
 
-awesome / cool UI that perhaps looks 3D.
-there might be lots of matching results
+The web UI now features a dark, animated gradient background and colourful
+buttons for selecting letters. Results are shown in a scrollable panel that uses
+matching dark styling. It still aims to look "cool" and remain readable even
+with many matching results.
 
 ## Code
 
@@ -101,5 +103,3 @@ testable code, with unit tests.
 unit tests running on CI
 command line interface to the tool, with feature parity as the web UI.
 MVP first: quality code and UI but just basic features. then iterate.
-
-y

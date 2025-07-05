@@ -107,7 +107,7 @@ This phase builds on the MVP to add more powerful features and improve the user 
 - [ ] Ensure the application is fully functional without an internet connection after the first visit
 
 ### Advanced UI
-- [ ] Explore and implement a more "awesome/cool" UI with animations
+- [x] Explore and implement a more "awesome/cool" UI with animations
 - [ ] Investigate the feasibility of a simple 3D-like interface element
 
 ## Future Ideas / Backlog
