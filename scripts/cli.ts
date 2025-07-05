@@ -29,7 +29,11 @@ export const solveCommandHandler = async (argv: any) => {
   const mustUseLetters = argv.mustUse ? argv.mustUse.toLowerCase() : '';
   const cannotUseLetters = argv.cannotUse ? argv.cannotUse.toLowerCase() : '';
 
-  const matchingWords: string[] = dictionary.filter(availableLetters, mustUseLetters, cannotUseLetters);
+  const startsWith = argv.startsWith ? argv.startsWith.toLowerCase() : '';
+  const endsWith = argv.endsWith ? argv.endsWith.toLowerCase() : '';
+  const letterGroups = argv.letterGroups ? argv.letterGroups.toLowerCase() : '';
+
+  const matchingWords: string[] = dictionary.filter(availableLetters, mustUseLetters, cannotUseLetters, startsWith, endsWith, letterGroups);
 
   return {
     matchingWords,
@@ -64,6 +68,21 @@ export const solveCommandHandler = async (argv: any) => {
           type: 'string',
           description: 'Path to a custom dictionary file',
           default: defaultDictionaryPath,
+        });
+        yargs.option('starts-with', {
+          alias: 's',
+          type: 'string',
+          description: 'Word must start with this letter',
+        });
+        yargs.option('ends-with', {
+          alias: 'e',
+          type: 'string',
+          description: 'Word must end with this letter',
+        });
+        yargs.option('letter-groups', {
+          alias: 'g',
+          type: 'string',
+          description: 'Comma-separated letter groups (e.g., "abc,def"). Consecutive letters in a word cannot be from the same group.',
         });
       },
       async (argv) => {

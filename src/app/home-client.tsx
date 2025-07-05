@@ -21,6 +21,9 @@ export default function Home({ wordList }: HomeProps) {
   });
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
+  const [startsWith, setStartsWith] = useState<string>('');
+  const [endsWith, setEndsWith] = useState<string>('');
+  const [letterGroups, setLetterGroups] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('alphabetical-asc');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
@@ -42,7 +45,7 @@ export default function Home({ wordList }: HomeProps) {
         (char) => letterStatuses[char] === 'unavailable'
       ).join('');
 
-      const filteredWords = dictionary.filter(availableLetters, requiredLetters, unavailableLetters);
+      const filteredWords = dictionary.filter(availableLetters, requiredLetters, unavailableLetters, startsWith, endsWith, letterGroups);
 
       const sortedWords = [...filteredWords];
       switch (sortOrder) {
@@ -63,7 +66,7 @@ export default function Home({ wordList }: HomeProps) {
     } else {
       setResults([]);
     }
-  }, [letterStatuses, dictionary, sortOrder]);
+  }, [letterStatuses, dictionary, sortOrder, startsWith, endsWith, letterGroups]);
 
   const handleLetterClick = (char: string) => {
     setLetterStatuses((prevStatuses) => {
@@ -110,6 +113,36 @@ export default function Home({ wordList }: HomeProps) {
         </div>
       )}
       <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+        <label htmlFor="startsWith" style={{ marginRight: '5px' }}>Starts with:</label>
+        <input
+          type="text"
+          id="startsWith"
+          value={startsWith}
+          onChange={(e) => setStartsWith(e.target.value.toLowerCase())}
+          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px', marginRight: '15px' }}
+          maxLength={1}
+        />
+        <label htmlFor="endsWith" style={{ marginRight: '5px' }}>Ends with:</label>
+        <input
+          type="text"
+          id="endsWith"
+          value={endsWith}
+          onChange={(e) => setEndsWith(e.target.value.toLowerCase())}
+          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px' }}
+          maxLength={1}
+        />
+      </div>
+      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+        <label htmlFor="letterGroups" style={{ marginRight: '5px' }}>Letter Groups (e.g., abc,def):</label>
+        <input
+          type="text"
+          id="letterGroups"
+          value={letterGroups}
+          onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
+          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '200px' }}
+        />
+      </div>
       <WordResults results={results} resultCount={results.length} onSortChange={handleSortChange} />
     </div>
   );

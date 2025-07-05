@@ -115,7 +115,7 @@ export class Dictionary {
    * @param unavailableLetters A string containing the letters that cannot be present in the word.
    * @returns An array of words from the dictionary that meet all criteria.
    */
-  public filter(availableLetters: string, requiredLetters: string, unavailableLetters: string): string[] {
+  public filter(availableLetters: string, requiredLetters: string, unavailableLetters: string, startsWith: string = '', endsWith: string = '', letterGroups: string = ''): string[] {
     const availableLettersSet = new Set(availableLetters.toLowerCase());
     const requiredLettersSet = new Set(requiredLetters.toLowerCase());
     const unavailableLettersSet = new Set(unavailableLetters.toLowerCase());
@@ -152,6 +152,32 @@ export class Dictionary {
           break;
         }
       }
+      // Check for startsWith and endsWith
+      if (startsWith && !word.startsWith(startsWith)) {
+        isValid = false;
+      }
+      if (isValid && endsWith && !word.endsWith(endsWith)) {
+        isValid = false;
+      }
+      if (!isValid) continue;
+
+      // Check for letter group restrictions
+      if (letterGroups) {
+        const groups = letterGroups.split(',').map(group => new Set(group.toLowerCase().split('')));
+        for (let i = 0; i < word.length - 1; i++) {
+          const char1 = word[i];
+          const char2 = word[i + 1];
+          for (const group of groups) {
+            if (group.has(char1) && group.has(char2)) {
+              isValid = false;
+              break;
+            }
+          }
+          if (!isValid) break;
+        }
+      }
+      if (!isValid) continue;
+
       if (isValid) {
         filtered.push(word);
       }

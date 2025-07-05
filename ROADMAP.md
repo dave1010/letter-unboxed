@@ -86,10 +86,10 @@ This phase builds on the MVP to add more powerful features and improve the user 
 - [x] Limit (defailt to 1000 just on web)
 
 ### Advanced Filtering
-- [ ] Implement filter: word must start with a specific letter
-- [ ] Implement filter: word must end with a specific letter
-- [ ] Combine multiple filters effectively
-- [ ] Restrict "movement". I.e. consecutive letters in a word can't use letters from the same group.
+- [x] Implement filter: word must start with a specific letter
+- [x] Implement filter: word must end with a specific letter
+- [x] Combine multiple filters effectively
+- [x] Restrict "movement". I.e. consecutive letters in a word can't use letters from the same group.
       Eg allowing letters "abc,def" allows word "dad" but not "ade" or "add".
       This should be optional in the CLI. Might be an advanced option for web UI.
       Also this allows putting every letter in its own group, which will block using the same letter twice.
