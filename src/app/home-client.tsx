@@ -105,35 +105,37 @@ export default function Home({ wordList }: HomeProps) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <header className="flex items-center justify-between mb-6">
-        <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
+    <div className="max-w-4xl mx-auto p-6 bg-white bg-opacity-5 shadow-2xl rounded-lg mt-10">
+      <header className="flex items-center justify-between mb-8">
+        <h1 className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
           Letter Unboxed
         </h1>
         <button
           aria-label={showHelp ? 'Close help' : 'Open help'}
           onClick={() => setShowHelp(!showHelp)}
-          className="text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="text-text-primary bg-accent hover:bg-opacity-80 p-3 rounded-full focus:outline-none focus:ring-2 focus:ring-secondary ring-offset-2 ring-offset-background-end transition-all duration-300 ease-in-out transform hover:scale-110"
         >
-          ?
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+          </svg>
         </button>
       </header>
       {showHelp && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-lg">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800">How to Use</h2>
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 p-4">
+          <div className="bg-background-end rounded-xl p-8 max-w-lg mx-auto shadow-2xl border border-accent">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-semibold text-primary">How to Use</h2>
               <button
                 aria-label="Close help"
                 onClick={() => setShowHelp(false)}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="text-text-secondary hover:text-primary focus:outline-none text-4xl"
               >
                 &times;
               </button>
             </div>
-            <div className="space-y-2 text-gray-700">
+            <div className="space-y-3 text-text-secondary">
               <p>This tool helps you solve Letter Boxed puzzles. Here&apos;s how:</p>
-              <ul className="list-disc list-inside">
+              <ul className="list-disc list-inside space-y-1 pl-2">
                 <li>
                   <strong>Select Letters:</strong> Click on the letters below to cycle through their states.
                 </li>
@@ -154,9 +156,11 @@ export default function Home({ wordList }: HomeProps) {
           </div>
         </div>
       )}
-      <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
-      <div className="mb-6 text-center">
-        <label htmlFor="letterGroups" className="mr-2 text-sm font-medium text-gray-700">
+      <div className="mb-8 p-6 bg-white bg-opacity-5 rounded-lg shadow-xl">
+        <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
+      </div>
+      <div className="mb-8 p-6 bg-white bg-opacity-5 rounded-lg shadow-xl text-center">
+        <label htmlFor="letterGroups" className="mr-3 text-lg font-medium text-text-secondary">
           Letter Groups (e.g., abc,def):
         </label>
         <input
@@ -164,7 +168,8 @@ export default function Home({ wordList }: HomeProps) {
           id="letterGroups"
           value={letterGroups}
           onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
-          className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="px-3 py-2 bg-background-start border border-accent rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-text-primary placeholder-text-secondary transition-colors"
+          placeholder="Enter letter groups..."
         />
       </div>
       <WordResults
