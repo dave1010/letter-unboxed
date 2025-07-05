@@ -47,12 +47,12 @@ This project is a Next.js application bootstrapped with `create-next-app` and us
 
 ## Dictionary Word Lists
 
-tbc. need to find some dictionaries. ideally similar to what NYT use.
-need to be permisively licenced. maybe pluggable.
-might want a smaller list for testing.
+The application uses a dictionary of words to find solutions. The main word list is located at `src/dictionary/scowl_35.txt`.
 
-will need to consider data format and delivery.
-1MB or so of JSON is probably fine.
+- **Source:** The word list is derived from SCOWL (Sets of Open-source Word Lists), which is permissively licensed.
+- **Format:** The dictionary is a plain text file with one word per line.
+- **Loading:** Words are loaded into a JavaScript `Set` for efficient lookups and filtering.
+- **Performance:** The dictionary is designed to be performant, allowing for quick filtering of words based on available letters. Performance tests ensure that filtering a large dictionary can be done efficiently (e.g., under 100ms).
 
 ## Features
 

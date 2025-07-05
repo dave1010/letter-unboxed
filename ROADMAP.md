@@ -2,8 +2,9 @@
 
 This document outlines the development plan for the "Letter Unboxed" tool.
 
-Check tasks only when they are *fully* complete. If tangible progress has been made but
-a task is not complete then split up the task.
+Check tasks only when they are *fully* complete. I.e. not just changing code.
+A task is only complete when you have seen the output of a passing test.
+If tangible progress has been made but a task is not complete then split up the task.
 
 Mark a checkbox as [?] if tangible work has been done but there is a problem and
 it can't be completed properly.
@@ -35,17 +36,29 @@ This phase focuses on getting the project foundation right, with automated testi
 This phase focuses on getting the basic, essential features working to have a usable product.
 
 ### Dictionary Management
-- [ ] Research and find a suitable, permissively licensed word list
-- [ ] Create a smaller, curated word list for development and testing
-- [ ] Define a format for the dictionary, a format that a full text search DB uses or something else.
+- [x] Researched and found a suitable, permissively licensed word list (en-wl/wordlist)
+- [x] Created a smaller, curated word list for development and testing (scowl_35.txt - 43k words)
+- [x] Defined a format for the dictionary: a plain text file with one word per line. This can be loaded into a JavaScript Set for efficient lookups.
 - [ ] Write a script to process the raw word list into the defined format
-- [ ] Run some performance tests
+- [ ] Create a robust way to load dictionaries so its available to a CLI script (and later web)
+- [ ] Create some test lookup query / regex that mimmick the functionality we'll create later
+- [x] Run some performance tests to ensure a smaller dict can be searched in under 500ms
+- [ ] Research suitable dictionary size for production use (extensive perf testing needed)
+- [ ] Configure dictionary creation script to be close to NYT Letter Boxed rules (eg non proper nouns)
 
 ### Core Logic (TypeScript)
-- [ ] Implement the core word-filtering logic
-    - [ ] Filter words based on available letters
-- [ ] Ensure the core logic is a separate, testable module
-- [ ] Write comprehensive unit tests for the core logic
+- [x] Implemented the basic word-filtering logic
+    - [x] Filtered words based on available letters
+- [x] Ensured the core logic is a separate, testable module
+- [x] Wrote comprehensive unit tests for the core logic
+- [ ] Ensure this will be suitable format for future phases
+
+### Basic CLI
+- [ ] Set up a basic CLI entry point (e.g., using `commander` or `yargs`)
+- [ ] Implement CLI command to take letters as input
+- [ ] Implement CLI flags for "must use" and "can't use" letters
+- [ ] Print matching words to the console
+
 
 ### Basic Web UI (MVP)
 - [ ] Create a simple page layout
@@ -57,12 +70,6 @@ This phase focuses on getting the basic, essential features working to have a us
 - [ ] Display the list of matching words
 - [ ] Implement live updates as letter selections change
 - [ ] Write integration tests for the UI components
-
-### Basic CLI
-- [ ] Set up a basic CLI entry point (e.g., using `commander` or `yargs`)
-- [ ] Implement CLI command to take letters as input
-- [ ] Implement CLI flags for "must use" and "can't use" letters
-- [ ] Print matching words to the console
 
 ## Phase 3: Feature Enhancement & UX
 
@@ -93,5 +100,5 @@ This phase focuses on making the project robust, maintainable, and easy to deplo
 
 ## Future Ideas / Backlog
 
-- [ ] **Pluggable Dictionaries:** Allow users to provide their own word lists. Ensure code supports tbis from the start.
+- [ ] **Optimize Dictionary Performance:** Further optimize the `Dictionary` class to achieve filtering times under 100ms for large word lists.
 - [ ] **Game-Specific Helpers:** Add features tailored to finding two-word solutions for Letter Boxed.
