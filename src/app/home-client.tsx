@@ -9,20 +9,18 @@ interface HomeProps {
   wordList: string[];
 }
 
-type LetterStatus = 'available' | 'required' | 'unavailable';
+type LetterStatus = 'available' | 'required-start' | 'required-anywhere' | 'required-end' | 'excluded';
 
 export default function Home({ wordList }: HomeProps) {
   const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => {
     const initialStatuses: Record<string, LetterStatus> = {};
     'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
-      initialStatuses[char] = 'unavailable';
+      initialStatuses[char] = 'excluded';
     });
     return initialStatuses;
   });
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [startsWith, setStartsWith] = useState<string>('');
-  const [endsWith, setEndsWith] = useState<string>('');
   const [letterGroups, setLetterGroups] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('alphabetical-asc');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
@@ -38,14 +36,27 @@ export default function Home({ wordList }: HomeProps) {
       const availableLetters = Object.keys(letterStatuses).filter(
         (char) => letterStatuses[char] === 'available'
       ).join('');
-      const requiredLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'required'
+      const requiredAnywhere = Object.keys(letterStatuses).filter(
+        (char) => letterStatuses[char] === 'required-anywhere'
       ).join('');
-      const unavailableLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'unavailable'
+      const requiredStart = Object.keys(letterStatuses).filter(
+        (char) => letterStatuses[char] === 'required-start'
+      ).join('');
+      const requiredEnd = Object.keys(letterStatuses).filter(
+        (char) => letterStatuses[char] === 'required-end'
+      ).join('');
+      const excludedLetters = Object.keys(letterStatuses).filter(
+        (char) => letterStatuses[char] === 'excluded'
       ).join('');
 
-      const filteredWords = dictionary.filter(availableLetters, requiredLetters, unavailableLetters, startsWith, endsWith, letterGroups);
+      const filteredWords = dictionary.filter(
+        availableLetters,
+        requiredAnywhere + requiredStart + requiredEnd,
+        excludedLetters,
+        requiredStart,
+        requiredEnd,
+        letterGroups
+      );
 
       const sortedWords = [...filteredWords];
       switch (sortOrder) {
@@ -66,22 +77,26 @@ export default function Home({ wordList }: HomeProps) {
     } else {
       setResults([]);
     }
-  }, [letterStatuses, dictionary, sortOrder, startsWith, endsWith, letterGroups]);
+  }, [letterStatuses, dictionary, sortOrder, letterGroups]);
 
   const handleLetterClick = (char: string) => {
-    setLetterStatuses((prevStatuses) => {
-      const currentStatus = prevStatuses[char];
-      let newStatus: LetterStatus;
-      if (currentStatus === 'unavailable') {
-        newStatus = 'available';
-      } else if (currentStatus === 'available') {
-        newStatus = 'required';
-      } else if (currentStatus === 'required') {
-        newStatus = 'unavailable';
+    setLetterStatuses((prev) => {
+      const current = prev[char];
+      let next: LetterStatus;
+      if (current === 'excluded') {
+        next = 'available';
+      } else if (current === 'available') {
+        next = 'required-start';
+      } else if (current === 'required-start') {
+        next = 'required-anywhere';
+      } else if (current === 'required-anywhere') {
+        next = 'required-end';
+      } else if (current === 'required-end') {
+        next = 'excluded';
       } else {
-        newStatus = 'unavailable'; // Default to unavailable if not set
+        next = 'excluded';
       }
-      return { ...prevStatuses, [char]: newStatus };
+      return { ...prev, [char]: next };
     });
   };
 
@@ -103,8 +118,10 @@ export default function Home({ wordList }: HomeProps) {
             <li style={{ marginBottom: '10px' }}><strong>Select Letters:</strong> Click on the letters below to cycle through their states:</li>
             <ul style={{ listStyle: 'circle', marginLeft: '20px', marginBottom: '10px' }}>
               <li><span style={{ fontWeight: 'bold', color: '#055160' }}>Available (Blue):</span> The letter can be used in words.</li>
-              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required (Green):</span> The letter *must* be used in every word.</li>
-              <li><span style={{ fontWeight: 'bold', color: '#721c24' }}>Excluded (Red):</span> The letter *cannot* be used in words.</li>
+              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required at Start:</span> The word must start with this letter (left border highlighted).</li>
+              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required anywhere:</span> The letter must appear somewhere in the word (bottom border highlighted).</li>
+              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required at End:</span> The word must end with this letter (right border highlighted).</li>
+              <li><span style={{ fontWeight: 'bold', color: '#721c24' }}>Excluded (Red):</span> The letter cannot be used in words.</li>
             </ul>
             <li style={{ marginBottom: '10px' }}><strong>View Results:</strong> As you select letters, matching words will appear below.</li>
             <li style={{ marginBottom: '10px' }}><strong>Sort Results:</strong> Use the dropdown to sort the results alphabetically or by length.</li>
@@ -113,26 +130,6 @@ export default function Home({ wordList }: HomeProps) {
         </div>
       )}
       <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
-      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-        <label htmlFor="startsWith" style={{ marginRight: '5px' }}>Starts with:</label>
-        <input
-          type="text"
-          id="startsWith"
-          value={startsWith}
-          onChange={(e) => setStartsWith(e.target.value.toLowerCase())}
-          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px', marginRight: '15px' }}
-          maxLength={1}
-        />
-        <label htmlFor="endsWith" style={{ marginRight: '5px' }}>Ends with:</label>
-        <input
-          type="text"
-          id="endsWith"
-          value={endsWith}
-          onChange={(e) => setEndsWith(e.target.value.toLowerCase())}
-          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px' }}
-          maxLength={1}
-        />
-      </div>
       <div style={{ marginBottom: '20px', textAlign: 'center' }}>
         <label htmlFor="letterGroups" style={{ marginRight: '5px' }}>Letter Groups (e.g., abc,def):</label>
         <input

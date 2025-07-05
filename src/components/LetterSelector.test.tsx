@@ -4,13 +4,13 @@ import { describe, it, expect, vi } from 'vitest';
 
 describe('LetterSelector', () => {
   const initialLetterStatuses = {
-    a: 'unavailable', b: 'available', c: 'required',
-    // ... rest of alphabet as unavailable for brevity
-    d: 'unavailable', e: 'unavailable', f: 'unavailable', g: 'unavailable', h: 'unavailable',
-    i: 'unavailable', j: 'unavailable', k: 'unavailable', l: 'unavailable', m: 'unavailable',
-    n: 'unavailable', o: 'unavailable', p: 'unavailable', q: 'unavailable', r: 'unavailable',
-    s: 'unavailable', t: 'unavailable', u: 'unavailable', v: 'unavailable', w: 'unavailable',
-    x: 'unavailable', y: 'unavailable', z: 'unavailable',
+    a: 'excluded', b: 'available', c: 'required-anywhere',
+    // ... rest of alphabet as excluded for brevity
+    d: 'excluded', e: 'excluded', f: 'excluded', g: 'excluded', h: 'excluded',
+    i: 'excluded', j: 'excluded', k: 'excluded', l: 'excluded', m: 'excluded',
+    n: 'excluded', o: 'excluded', p: 'excluded', q: 'excluded', r: 'excluded',
+    s: 'excluded', t: 'excluded', u: 'excluded', v: 'excluded', w: 'excluded',
+    x: 'excluded', y: 'excluded', z: 'excluded',
   };
 
   it('renders all alphabet letters', () => {
@@ -32,7 +32,7 @@ describe('LetterSelector', () => {
     const onLetterClick = vi.fn();
     render(<LetterSelector letterStatuses={initialLetterStatuses} onLetterClick={onLetterClick} />);
 
-    // Check 'unavailable' (default)
+    // Check 'excluded' (default)
     expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('background-color: #f8d7da');
     expect(screen.getByRole('button', { name: 'A' })).toHaveStyle('color: #721c24');
 
@@ -40,7 +40,7 @@ describe('LetterSelector', () => {
     expect(screen.getByRole('button', { name: 'B' })).toHaveStyle('background-color: #cfe2ff');
     expect(screen.getByRole('button', { name: 'B' })).toHaveStyle('color: #055160');
 
-    // Check 'required'
+    // Check 'required-anywhere'
     expect(screen.getByRole('button', { name: 'C' })).toHaveStyle('background-color: #d4edda');
     expect(screen.getByRole('button', { name: 'C' })).toHaveStyle('color: #155724');
   });

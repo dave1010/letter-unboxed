@@ -73,7 +73,7 @@ This phase focuses on getting the basic, essential features working to have a us
     - [x] Can't be used
 - [x] Display the list of matching words
 - [x] Implement live updates as letter selections change
-- [ ] Write integration tests for the UI components
+- [x] Write integration tests for the UI components
 
 ## Phase 3: Feature Enhancement & UX
 
