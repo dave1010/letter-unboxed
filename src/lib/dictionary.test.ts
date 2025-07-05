@@ -77,4 +77,23 @@ describe('Dictionary', () => {
     expect(dictionary.filterAvailable('bokepr')).toEqual(expect.arrayContaining(['bookkeeper']));
     expect(dictionary.filterAvailable('bokeeper')).toEqual(expect.arrayContaining(['bookkeeper']));
   });
+
+  it('should filter words with startsWith and endsWith parameters', () => {
+    const allLetters = 'abcdefghijklmnopqrstuvwxyz';
+    const dictionary = new Dictionary('apple', 'banana', 'angle', 'ample', 'ape');
+    expect(dictionary.filter(allLetters, '', '', 'a', 'e')).toEqual(expect.arrayContaining(['apple', 'angle', 'ample', 'ape']));
+    expect(dictionary.filter(allLetters, '', '', 'AP', 'LE')).toEqual(expect.arrayContaining(['apple']));
+  });
+
+  it('should filter words based on letterGroups restrictions', () => {
+    const dictionary = new Dictionary('ada', 'aba', 'aca', 'bcb', 'bcc', 'dad');
+    expect(dictionary.filter('abcd', '', '', '', '', 'ab')).toEqual(expect.arrayContaining(['ada', 'aca', 'bcb', 'bcc', 'dad']));
+    expect(dictionary.filter('ABCD', '', '', '', '', 'AB')).toEqual(expect.arrayContaining(['ada', 'aca', 'bcb', 'bcc', 'dad']));
+  });
+
+  it('should handle case insensitivity across available, required, and unavailable letters in filter', () => {
+    const dictionary = new Dictionary('apple', 'banana', 'cherry');
+    expect(dictionary.filter('APPLEBANACHERRY', 'A', 'C')).toEqual(expect.arrayContaining(['apple', 'banana']));
+    expect(dictionary.filter('appleBANACHERRY', 'a', 'c')).toEqual(expect.arrayContaining(['apple', 'banana']));
+  });
 });

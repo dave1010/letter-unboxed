@@ -109,13 +109,25 @@ export class Dictionary {
   }
 
   /**
-   * Filters words based on available, required, and unavailable letters.
+   * Filters words based on available, required, and unavailable letters, as well as optional start, end, and letter group restrictions.
    * @param availableLetters A string containing the letters that are available.
    * @param requiredLetters A string containing the letters that must be present in the word.
    * @param unavailableLetters A string containing the letters that cannot be present in the word.
+   * @param startsWith Optional prefix that the word must start with.
+   * @param endsWith Optional suffix that the word must end with.
+   * @param letterGroups Optional comma-separated string of letter groups that cannot appear adjacently in a word.
    * @returns An array of words from the dictionary that meet all criteria.
    */
-  public filter(availableLetters: string, requiredLetters: string, unavailableLetters: string, startsWith: string = '', endsWith: string = '', letterGroups: string = ''): string[] {
+  public filter(
+    availableLetters: string,
+    requiredLetters: string,
+    unavailableLetters: string,
+    startsWith: string = '',
+    endsWith: string = '',
+    letterGroups: string = ''
+  ): string[] {
+    const startsWithLower = startsWith.toLowerCase();
+    const endsWithLower = endsWith.toLowerCase();
     const availableLettersSet = new Set(availableLetters.toLowerCase());
     const requiredLettersSet = new Set(requiredLetters.toLowerCase());
     const unavailableLettersSet = new Set(unavailableLetters.toLowerCase());
@@ -152,11 +164,11 @@ export class Dictionary {
           break;
         }
       }
-      // Check for startsWith and endsWith
-      if (startsWith && !word.startsWith(startsWith)) {
+      // Check for startsWith and endsWith (case-insensitive)
+      if (startsWithLower && !word.startsWith(startsWithLower)) {
         isValid = false;
       }
-      if (isValid && endsWith && !word.endsWith(endsWith)) {
+      if (isValid && endsWithLower && !word.endsWith(endsWithLower)) {
         isValid = false;
       }
       if (!isValid) continue;
