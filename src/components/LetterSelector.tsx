@@ -13,36 +13,36 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
   return (
     <div className="mb-6 text-center">
       <div className="flex flex-wrap justify-center gap-2 mb-4">
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-blue-200 text-blue-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-blue-500 bg-blue-700 text-white">
           Available
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-l-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-green-500 bg-green-700 text-white border-l-4">
           Required at Start
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-b-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-green-500 bg-green-700 text-white border-b-4">
           Required anywhere
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-green-200 text-green-700 border-r-4 border-green-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-green-500 bg-green-700 text-white border-r-4">
           Required at End
         </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border border-gray-300 bg-rose-200 text-rose-700">
+        <span className="px-3 py-1 text-xs font-bold rounded border border-rose-500 bg-rose-700 text-white">
           Excluded
         </span>
       </div>
       <div className="flex flex-wrap justify-center gap-2">
         {alphabet.map((char) => {
           const status = letterStatuses[char];
-          const base = 'px-4 py-2 text-lg font-bold rounded transition border';
+          const base = 'px-4 py-2 text-lg font-bold rounded transition border transform hover:scale-105';
           const statusClasses =
             status === 'available'
-              ? 'bg-blue-200 text-blue-700 border-blue-400'
+              ? 'bg-blue-700 text-white border-blue-500 hover:bg-blue-600'
               : status === 'required-start'
-              ? 'bg-green-200 text-green-700 border-green-400 border-l-4'
+              ? 'bg-green-700 text-white border-green-500 border-l-4 hover:bg-green-600'
               : status === 'required-anywhere'
-              ? 'bg-green-200 text-green-700 border-green-400 border-b-4'
+              ? 'bg-green-700 text-white border-green-500 border-b-4 hover:bg-green-600'
               : status === 'required-end'
-              ? 'bg-green-200 text-green-700 border-green-400 border-r-4'
-              : 'bg-rose-200 text-rose-700 border-rose-400';
+              ? 'bg-green-700 text-white border-green-500 border-r-4 hover:bg-green-600'
+              : 'bg-rose-700 text-white border-rose-500 hover:bg-rose-600';
           return (
             <button
               key={char}

@@ -44,8 +44,8 @@ describe('Home', () => {
   it('initializes letter statuses to unavailable', () => {
     render(<Home wordList={mockWordList} />);
     // Check a few letters to ensure they are initially unavailable (red background)
-    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-200');
-    expect(screen.getByRole('button', { name: 'Z' })).toHaveClass('bg-rose-200');
+    expect(screen.getByRole('button', { name: 'A' })).toHaveClass('bg-rose-700');
+    expect(screen.getByRole('button', { name: 'Z' })).toHaveClass('bg-rose-700');
   });
 
   it('filters words based on letter status changes', async () => {

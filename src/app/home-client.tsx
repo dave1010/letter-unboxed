@@ -113,25 +113,25 @@ export default function Home({ wordList }: HomeProps) {
         <button
           aria-label={showHelp ? 'Close help' : 'Open help'}
           onClick={() => setShowHelp(!showHelp)}
-          className="text-white bg-blue-600 hover:bg-blue-700 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="text-white bg-blue-700 hover:bg-blue-600 p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           ?
         </button>
       </header>
       {showHelp && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-lg">
+          <div className="bg-gray-900 rounded-lg p-6 max-w-lg mx-4 shadow-lg text-gray-100">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-2xl font-semibold text-gray-800">How to Use</h2>
+              <h2 className="text-2xl font-semibold">How to Use</h2>
               <button
                 aria-label="Close help"
                 onClick={() => setShowHelp(false)}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none"
+                className="text-gray-400 hover:text-gray-200 focus:outline-none"
               >
                 &times;
               </button>
             </div>
-            <div className="space-y-2 text-gray-700">
+            <div className="space-y-2">
               <p>This tool helps you solve Letter Boxed puzzles. Here&apos;s how:</p>
               <ul className="list-disc list-inside">
                 <li>
@@ -156,7 +156,7 @@ export default function Home({ wordList }: HomeProps) {
       )}
       <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
       <div className="mb-6 text-center">
-        <label htmlFor="letterGroups" className="mr-2 text-sm font-medium text-gray-700">
+        <label htmlFor="letterGroups" className="mr-2 text-sm font-medium text-gray-200">
           Letter Groups (e.g., abc,def):
         </label>
         <input
@@ -164,7 +164,7 @@ export default function Home({ wordList }: HomeProps) {
           id="letterGroups"
           value={letterGroups}
           onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
-          className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          className="px-2 py-1 border border-gray-600 rounded-md bg-gray-800 text-gray-100 focus:outline-none focus:ring-2 focus:ring-purple-500"
         />
       </div>
       <WordResults
