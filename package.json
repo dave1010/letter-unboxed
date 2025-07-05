@@ -6,7 +6,7 @@
     "dev": "NEXT_SWC_BINARY_PATH= next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint src",
+    "lint": "next lint",
     "test": "vitest run",
     "test:ui": "vitest --ui"
   },
