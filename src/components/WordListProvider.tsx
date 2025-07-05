@@ -3,7 +3,7 @@ import path from 'path';
 import { ReactNode } from 'react';
 
 interface WordListProviderProps {
-  children: ReactNode;
+  children: (wordList: string[]) => ReactNode;
 }
 
 export async function WordListProvider({ children }: WordListProviderProps) {
