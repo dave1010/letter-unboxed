@@ -1,18 +1,29 @@
-import React from 'react';
+import React from 'react'
 
 interface WordResultsProps {
-  results: string[];
-  resultCount: number;
-  onSortChange: (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => void;
+  results: string[]
+  resultCount: number
+  onSortChange: (
+    sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'
+  ) => void
 }
 
 const WordResults: React.FC<WordResultsProps> = ({ results, resultCount, onSortChange }) => {
   return (
-    <div style={{ borderTop: '1px solid #eee', paddingTop: '20px' }}>
-      <h2 style={{ color: '#555', textAlign: 'center', marginBottom: '15px' }}>Results ({resultCount})</h2>
-      <div style={{ textAlign: 'center', marginBottom: '15px' }}>
-        <label htmlFor="sortOrder">Sort by: </label>
-        <select id="sortOrder" onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onSortChange(e.target.value as 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc')} style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}>
+    <div className="border-t border-gray-200 pt-5">
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="text-center text-xl font-bold text-gray-700">
+          Results ({resultCount})
+        </h2>
+        <select
+          aria-label="Sort results"
+          onChange={(e) =>
+            onSortChange(
+              e.target.value as 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'
+            )
+          }
+          className="rounded border p-1 text-sm"
+        >
           <option value="alphabetical-asc">Alphabetical (A-Z)</option>
           <option value="alphabetical-desc">Alphabetical (Z-A)</option>
           <option value="length-asc">Length (shortest first)</option>
@@ -20,34 +31,20 @@ const WordResults: React.FC<WordResultsProps> = ({ results, resultCount, onSortC
         </select>
       </div>
       {results.length === 0 && (
-        <p style={{ textAlign: 'center', color: '#777' }}>No words found for the selected letters.</p>
+        <p className="text-center text-gray-600">No words found for the selected letters.</p>
       )}
-      <ul style={{
-        listStyle: 'none',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
-        gap: '10px',
-        maxHeight: '400px', // Fixed height
-        overflowY: 'auto', // Enable vertical scrolling
-        border: '1px solid #eee',
-        padding: '10px',
-        borderRadius: '5px',
-      }}>
+      <ul className="grid max-h-96 list-none gap-2 overflow-y-auto rounded border p-2 md:grid-cols-3">
         {results.map((word) => (
-          <li key={word} style={{
-            background: '#f9f9f9',
-            border: '1px solid #eee',
-            borderRadius: '5px',
-            padding: '8px',
-            textAlign: 'center',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-          }}>
+          <li
+            key={word}
+            className="rounded border bg-white p-2 text-center shadow-sm"
+          >
             {word}
           </li>
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default WordResults;
+export default WordResults
