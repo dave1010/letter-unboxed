@@ -12,7 +12,7 @@ describe('Dictionary Performance', () => {
     const availableLetters = 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz'; // All letters, repeated to allow for words with multiple instances of the same letter
 
     const startTime = performance.now();
-    const filteredWords = dictionary.filterAvailable(availableLetters);
+    const filteredWords = dictionary.filter(availableLetters, '', '');
     const endTime = performance.now();
 
     const duration = endTime - startTime;
