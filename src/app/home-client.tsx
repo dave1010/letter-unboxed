@@ -2,23 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { Dictionary } from '../lib/dictionary';
-import LetterSelector from '../components/LetterSelector';
 import WordResults from '../components/WordResults';
 
 interface HomeProps {
   wordList: string[];
 }
 
-type LetterStatus = 'available' | 'required' | 'unavailable';
-
 export default function Home({ wordList }: HomeProps) {
-  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => {
-    const initialStatuses: Record<string, LetterStatus> = {};
-    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
-      initialStatuses[char] = 'unavailable';
-    });
-    return initialStatuses;
-  });
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [startsWith, setStartsWith] = useState<string>('');
@@ -35,17 +25,8 @@ export default function Home({ wordList }: HomeProps) {
 
   useEffect(() => {
     if (dictionary) {
-      const availableLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'available'
-      ).join('');
-      const requiredLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'required'
-      ).join('');
-      const unavailableLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'unavailable'
-      ).join('');
-
-      const filteredWords = dictionary.filter(availableLetters, requiredLetters, unavailableLetters, startsWith, endsWith, letterGroups);
+      // TODO: Update filter logic if 'availableLetters', 'requiredLetters', 'unavailableLetters' were used beyond LetterSelector
+      const filteredWords = dictionary.filter('', '', '', startsWith, endsWith, letterGroups);
 
       const sortedWords = [...filteredWords];
       switch (sortOrder) {
@@ -66,82 +47,84 @@ export default function Home({ wordList }: HomeProps) {
     } else {
       setResults([]);
     }
-  }, [letterStatuses, dictionary, sortOrder, startsWith, endsWith, letterGroups]);
-
-  const handleLetterClick = (char: string) => {
-    setLetterStatuses((prevStatuses) => {
-      const currentStatus = prevStatuses[char];
-      let newStatus: LetterStatus;
-      if (currentStatus === 'unavailable') {
-        newStatus = 'available';
-      } else if (currentStatus === 'available') {
-        newStatus = 'required';
-      } else if (currentStatus === 'required') {
-        newStatus = 'unavailable';
-      } else {
-        newStatus = 'unavailable'; // Default to unavailable if not set
-      }
-      return { ...prevStatuses, [char]: newStatus };
-    });
-  };
+  }, [dictionary, sortOrder, startsWith, endsWith, letterGroups]);
 
   const handleSortChange = (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => {
     setSortOrder(sortOrder);
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ color: '#333', textAlign: 'center', fontSize: '2.5em', marginBottom: '20px', textShadow: '2px 2px 4px rgba(0,0,0,0.1)' }}>Letter Unboxed</h1>
-      <button onClick={() => setShowHelp(!showHelp)} style={{ display: 'block', margin: '0 auto 20px auto', padding: '10px 20px', fontSize: '1em', cursor: 'pointer', borderRadius: '5px', border: '1px solid #ccc', backgroundColor: '#f0f0f0' }}>
-        {showHelp ? 'Hide Help' : 'Show Help'}
-      </button>
+    <div className="font-sans p-5 max-w-3xl mx-auto">
+      <div className="relative">
+        <h1 className="text-emerald-600 text-center text-5xl font-bold mb-10 tracking-tight" style={{ textShadow: '3px 3px 6px rgba(0,128,0,0.2)' }}>Letter Unboxed</h1>
+        <button
+          onClick={() => setShowHelp(true)}
+          className="absolute top-0 right-0 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-full w-8 h-8 flex items-center justify-center text-xl shadow-md transition-all hover:shadow-lg"
+          aria-label="Show help"
+        >
+          ?
+        </button>
+      </div>
+
       {showHelp && (
-        <div style={{ background: '#fff', border: '1px solid #eee', borderRadius: '8px', padding: '20px', marginBottom: '20px', boxShadow: '0 4px 8px rgba(0,0,0,0.05)' }}>
-          <h2 style={{ textAlign: 'center', color: '#555', marginBottom: '15px' }}>How to Use</h2>
-          <p>This tool helps you solve Letter Boxed puzzles. Here&apos;s how:</p>
-          <ul style={{ listStyle: 'disc', marginLeft: '20px' }}>
-            <li style={{ marginBottom: '10px' }}><strong>Select Letters:</strong> Click on the letters below to cycle through their states:</li>
-            <ul style={{ listStyle: 'circle', marginLeft: '20px', marginBottom: '10px' }}>
-              <li><span style={{ fontWeight: 'bold', color: '#055160' }}>Available (Blue):</span> The letter can be used in words.</li>
-              <li><span style={{ fontWeight: 'bold', color: '#155724' }}>Required (Green):</span> The letter *must* be used in every word.</li>
-              <li><span style={{ fontWeight: 'bold', color: '#721c24' }}>Excluded (Red):</span> The letter *cannot* be used in words.</li>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-gradient-to-br from-teal-400 to-emerald-600 p-6 rounded-xl shadow-2xl max-w-lg w-full text-white transform transition-all scale-100 opacity-100">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-3xl font-bold tracking-tight">How to Use</h2>
+              <button
+                onClick={() => setShowHelp(false)}
+                className="text-white hover:text-teal-100 text-3xl font-bold"
+                aria-label="Close help"
+              >
+                &times;
+              </button>
+            </div>
+            <p className="mb-4 text-teal-50">This tool helps you find words based on various criteria. Here&apos;s how:</p>
+            <ul className="list-disc list-inside space-y-2 text-teal-100">
+              <li><strong>Filter by Starting/Ending Letters:</strong> Enter a letter in the &apos;Starts with&apos; or &apos;Ends with&apos; fields.</li>
+              <li><strong>Filter by Letter Groups:</strong> Enter groups of letters that must appear in the word (e.g., "th", "ing"). Separate multiple groups with commas.</li>
+              <li><strong>View Results:</strong> Matching words will appear below.</li>
+              <li><strong>Sort Results:</strong> Use the controls to sort the results alphabetically or by length.</li>
+              <li><strong>Limit Results:</strong> Only the first 1000 results are shown for performance.</li>
             </ul>
-            <li style={{ marginBottom: '10px' }}><strong>View Results:</strong> As you select letters, matching words will appear below.</li>
-            <li style={{ marginBottom: '10px' }}><strong>Sort Results:</strong> Use the dropdown to sort the results alphabetically or by length.</li>
-            <li><strong>Limit Results:</strong> Only the first 1000 results are shown for performance.</li>
-          </ul>
+          </div>
         </div>
       )}
-      <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
-      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-        <label htmlFor="startsWith" style={{ marginRight: '5px' }}>Starts with:</label>
-        <input
-          type="text"
-          id="startsWith"
-          value={startsWith}
-          onChange={(e) => setStartsWith(e.target.value.toLowerCase())}
-          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px', marginRight: '15px' }}
-          maxLength={1}
-        />
-        <label htmlFor="endsWith" style={{ marginRight: '5px' }}>Ends with:</label>
-        <input
-          type="text"
-          id="endsWith"
-          value={endsWith}
-          onChange={(e) => setEndsWith(e.target.value.toLowerCase())}
-          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '80px' }}
-          maxLength={1}
-        />
-      </div>
-      <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-        <label htmlFor="letterGroups" style={{ marginRight: '5px' }}>Letter Groups (e.g., abc,def):</label>
-        <input
-          type="text"
-          id="letterGroups"
-          value={letterGroups}
-          onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
-          style={{ padding: '8px', borderRadius: '5px', border: '1px solid #ccc', width: '200px' }}
-        />
+      <div className="bg-white p-6 rounded-lg shadow-lg mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div className="flex flex-col items-center">
+            <label htmlFor="startsWith" className="mb-1 text-slate-700 font-medium self-start">Starts with:</label>
+            <input
+              type="text"
+              id="startsWith"
+              value={startsWith}
+              onChange={(e) => setStartsWith(e.target.value.toLowerCase())}
+              className="p-2 rounded-md border border-slate-300 w-full focus:ring-emerald-500 focus:border-emerald-500 shadow-sm"
+              maxLength={1}
+            />
+          </div>
+          <div className="flex flex-col items-center">
+            <label htmlFor="endsWith" className="mb-1 text-slate-700 font-medium self-start">Ends with:</label>
+            <input
+              type="text"
+              id="endsWith"
+              value={endsWith}
+              onChange={(e) => setEndsWith(e.target.value.toLowerCase())}
+              className="p-2 rounded-md border border-slate-300 w-full focus:ring-emerald-500 focus:border-emerald-500 shadow-sm"
+              maxLength={1}
+            />
+          </div>
+        </div>
+        <div className="text-center">
+          <label htmlFor="letterGroups" className="mb-1 text-slate-700 font-medium block text-left">Letter Groups (e.g., abc,def):</label>
+          <input
+            type="text"
+            id="letterGroups"
+            value={letterGroups}
+            onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
+            className="p-2 rounded-md border border-slate-300 w-full md:w-3/4 lg:w-1/2 focus:ring-emerald-500 focus:border-emerald-500 shadow-sm mx-auto"
+          />
+        </div>
       </div>
       <WordResults results={results} resultCount={results.length} onSortChange={handleSortChange} />
     </div>
