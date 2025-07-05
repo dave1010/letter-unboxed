@@ -5,6 +5,9 @@ This document outlines the development plan for the "Letter Unboxed" tool.
 Check tasks only when they are *fully* complete. If tangible progress has been made but
 a task is not complete then split up the task.
 
+Mark a checkbox as [?] if tangible work has been done but there is a problem and
+it can't be completed properly.
+
 Keep README.md up to date with how to run/use the project.
 
 ## Phase 1: Infrastructure & Setup
