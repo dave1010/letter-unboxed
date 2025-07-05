@@ -13,9 +13,6 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
   return (
     <div style={{ marginBottom: '20px', textAlign: 'center' }}>
       <h2 style={{ color: '#555', marginBottom: '10px' }}>Select Available Letters</h2>
-      <p style={{ marginBottom: '15px', fontSize: '0.9em', color: '#666' }}>
-        Click letters to cycle through: Available (blue) &rarr; Required at Start (light green, left border) &rarr; Required anywhere (green, bottom border) &rarr; Required at End (light green, right border) &rarr; Excluded (red)
-      </p>
       <div style={{ marginBottom: '10px' }}>
         <span style={{
           padding: '5px 10px',
@@ -81,7 +78,10 @@ const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLette
             borderRadius: '5px',
             cursor: 'pointer',
             minWidth: '50px',
-            border: '1px solid #ccc'
+            border: '1px solid #ccc',
+            borderLeft: '1px solid #ccc',
+            borderBottom: '1px solid #ccc',
+            borderRight: '1px solid #ccc'
           };
           if (status === 'available') {
             style.backgroundColor = '#cfe2ff';
