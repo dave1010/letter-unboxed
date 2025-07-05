@@ -1,6 +1,6 @@
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
-import { Dictionary } from '../src/lib/dictionary';
+import { Dictionary } from '../src/lib/dictionary.ts';
 import * as fs from 'fs';
 
 const defaultDictionaryPath = './src/dictionary/scowl_35.txt';
@@ -50,7 +50,7 @@ export const solveCommandHandler = async (argv: any) => {
   };
 };
 
-if (typeof require !== 'undefined' && require.main === module) {
+// if (typeof require !== 'undefined' && require.main === module) {
   yargs(hideBin(process.argv))
     .command(
       'solve <letters>',
@@ -94,4 +94,4 @@ if (typeof require !== 'undefined' && require.main === module) {
     .help()
     .alias('h', 'help')
     .parse();
-}
+// }
