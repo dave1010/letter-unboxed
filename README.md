@@ -2,6 +2,8 @@
 
 Letter Unboxed helps you explore words for the NYT puzzle **Letter Boxed**. It provides a responsive web interface and a command-line tool to filter large dictionaries by the letters you have available.
 
+**[Try it out at letter-unboxed.dave.engineer](https://letter-unboxed.dave.engineer/)**
+
 ## Features
 
 - Toggle letters between **available**, **required**, and **excluded** states
