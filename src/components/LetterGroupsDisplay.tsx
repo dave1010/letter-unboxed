@@ -29,7 +29,7 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuse
       ))}
       <button
         onClick={onShowLetters}
-        className="py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105 bg-gray-600 text-gray-300 border-gray-700"
+        className="py-2 px-4 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105 bg-gray-600 text-gray-300 border-gray-700"
       >
         Letters
       </button>
