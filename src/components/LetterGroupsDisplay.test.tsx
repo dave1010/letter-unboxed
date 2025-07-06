@@ -9,10 +9,15 @@ describe('LetterGroupsDisplay', () => {
     c: 'excluded',
   } as const;
 
-  it('uses grid layout for letters', () => {
-    render(<LetterGroupsDisplay letterStatuses={letterStatuses} onShowLetters={() => {}} />);
-    const lettersButton = screen.getByRole('button', { name: 'Letters' });
-    expect(lettersButton.parentElement).toHaveClass('grid', 'grid-cols-10');
+  it('renders letter buttons as squares', () => {
+    render(
+      <LetterGroupsDisplay
+        letterStatuses={letterStatuses}
+        onShowLetters={() => {}}
+      />
+    );
+    const letterButton = screen.getByRole('button', { name: 'A' });
+    expect(letterButton).toHaveClass('aspect-square');
   });
 
   it('renders Letters button with large text', () => {
