@@ -133,8 +133,8 @@ export default function Home({ wordList }: HomeProps) {
         </button>
       </header>
       {showHelp && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-lg">
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-2xl border border-gray-200">
             <div className="flex items-center justify-between mb-4">
             <h2 className="text-2xl font-semibold text-gray-800">About</h2>
               <button
@@ -145,13 +145,67 @@ export default function Home({ wordList }: HomeProps) {
                 &times;
               </button>
             </div>
-            <div className="space-y-2 text-gray-700">
-              <p>Explore potential Letter Boxed words!</p>
+            <div className="space-y-4 text-gray-700">
               <p>
-                Tap letters to cycle through making them available for words,
-                requiring them in words, or excluding them.
+                Explore potential Letter Boxed words, find anagrams and learn words that start or end with specific letters.
               </p>
-              <p>Github (https://github.com/dave1010/letter-unboxed)</p>
+              <p>Tap letters to cycle through modes:</p>
+              <div className="flex flex-wrap justify-center gap-2">
+                <span className="px-3 py-1 text-xs font-bold rounded border-2 border-blue-700 bg-gradient-to-br from-blue-500 to-blue-700 text-white">
+                  Available
+                </span>
+                <span className="px-3 pl-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+                  Start
+                </span>
+                <span className="px-3 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+                  Must contain
+                </span>
+                <span className="px-3 pr-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
+                  End
+                </span>
+                <span className="px-3 py-1 text-xs font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300">
+                  Excluded
+                </span>
+              </div>
+              <p>
+                <a
+                  href="https://dave.engineer"
+                  className="underline text-blue-700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Made by Dave
+                </a>
+                {' · '}
+                <a
+                  href="https://github.com/dave1010/letter-unboxed"
+                  className="underline text-blue-700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View code on GitHub
+                </a>
+              </p>
+              <p>
+                <a
+                  href="http://wordlist.aspell.net/"
+                  className="underline text-blue-700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Word list from SCOWL
+                </a>
+              </p>
+              <p>
+                <a
+                  href="https://www.nytimes.com/puzzles/letter-boxed"
+                  className="underline text-blue-700"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Not affiliated with NYT Letter Boxed
+                </a>
+              </p>
             </div>
           </div>
         </div>

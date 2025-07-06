@@ -12,23 +12,6 @@ interface LetterSelectorProps {
 
   return (
     <div className="mb-6 text-center">
-      <div className="flex flex-wrap justify-center gap-2 mb-4">
-        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-blue-700 bg-gradient-to-br from-blue-500 to-blue-700 text-white">
-          Available
-        </span>
-        <span className="px-3 pl-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
-          Start
-        </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
-          Must contain
-        </span>
-        <span className="px-3 pr-1 py-1 text-xs font-bold rounded border-2 border-white bg-gradient-to-br from-green-600 to-green-800 text-white">
-          End
-        </span>
-        <span className="px-3 py-1 text-xs font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300">
-          Excluded
-        </span>
-      </div>
               <div className="space-y-2 w-full max-w-lg mx-auto">
                 {rows.map((row, rowIndex) => (
                   <div key={row} className="grid grid-cols-10 gap-1 w-full">

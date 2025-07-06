@@ -106,12 +106,13 @@ This phase builds on the MVP to add more powerful features and improve the user 
 - [x] Make the questionmark button a circle, not oval
 - [x] Replace "How to use" with "About"
 - [x] Remove copy "This tool helps you solve Letter Boxed puzzles. Here's how:" and replace with
-     "Explore potential Letter Boxed words!
+     "Explore potential Letter Boxed words, find anagrams and learn words that start or end with specific letters.
 
-     Tap letters to cycle through making them available for words, requiring them in words,
-     or excluding them.
+     Tap letters to cycle through modes:
 
-     Github (https://github.com/dave1010/letter-unboxed)"
+     Available, Start, Must contain, End, Excluded.
+
+     Made by Dave (https://dave.engineer) · View code on GitHub (https://github.com/dave1010/letter-unboxed)"
 - [x] Make the red excluded state not so bright. Maybe darker red/grey - almost a disabled state colour.
 - [x] Make the green required state a bit darker, so the white text is more visible.
 - [x] Make the green state border more visible (white) and ensure the letters dont jump as border size changes.
