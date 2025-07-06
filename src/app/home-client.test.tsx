@@ -95,4 +95,20 @@ describe('Home', () => {
     // Check if WordResults is rendered (by checking one of its internal elements)
     expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
   });
+
+  it('toggles letter group controls when Groups and Letters buttons are clicked', () => {
+    render(<Home wordList={mockWordList} />);
+
+    // Groups button should be visible and input hidden initially
+    expect(screen.queryByLabelText(/Letter Groups/)).not.toBeInTheDocument();
+    const groupsButton = screen.getByRole('button', { name: 'Groups' });
+    fireEvent.click(groupsButton);
+    // Now input should be visible and keyboard hidden
+    expect(screen.getByLabelText(/Letter Groups/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'A' })).not.toBeInTheDocument();
+    const lettersButton = screen.getByRole('button', { name: 'Letters' });
+    fireEvent.click(lettersButton);
+    expect(screen.queryByLabelText(/Letter Groups/)).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'A' })).toBeInTheDocument();
+  });
 });

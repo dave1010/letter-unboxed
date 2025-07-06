@@ -5,10 +5,11 @@ type LetterStatus = 'available' | 'required-start' | 'required-anywhere' | 'requ
 interface LetterSelectorProps {
   letterStatuses: Record<string, LetterStatus>;
   onLetterClick: (char: string) => void;
+  onShowGroups?: () => void;
 }
 
-	const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLetterClick }) => {
-	  const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
+        const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLetterClick, onShowGroups }) => {
+          const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
 
   return (
     <div className="mb-6 text-center">
@@ -29,38 +30,46 @@ interface LetterSelectorProps {
           Excluded
         </span>
       </div>
-	      <div className="space-y-2 w-full max-w-lg mx-auto">
-	        {rows.map((row) => (
-	          <div key={row} className="grid grid-cols-10 gap-1 w-full">
-	            {row.split('').map((char) => {
-	              const status = letterStatuses[char];
-	              const base =
-	                'py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105';
-	              const alignClass =
-	                status === 'required-start'
-	                  ? 'text-left pl-0'
-	                  : status === 'required-end'
-	                  ? 'text-right pr-0'
-	                  : 'text-center';
-	              const statusClasses =
-	                status === 'available'
-	                  ? `bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-700 ${alignClass}`
-	                  : status.startsWith('required')
-	                  ? `bg-gradient-to-br from-green-600 to-green-800 text-white border-green-800 ${alignClass}`
-	                  : `bg-gray-600 text-gray-300 border-gray-700 ${alignClass}`;
-	              return (
-	                <button
-	                  key={char}
-	                  onClick={() => onLetterClick(char)}
-	                  className={`${base} ${statusClasses}`}
-	                >
-	                  {char.toUpperCase()}
-	                </button>
-	              );
-	            })}
-	          </div>
-	        ))}
-	      </div>
+              <div className="space-y-2 w-full max-w-lg mx-auto">
+                {rows.map((row, rowIndex) => (
+                  <div key={row} className="grid grid-cols-10 gap-1 w-full">
+                    {row.split('').map((char) => {
+                      const status = letterStatuses[char];
+                      const base =
+                        'py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105';
+                      const alignClass =
+                        status === 'required-start'
+                          ? 'text-left pl-0'
+                          : status === 'required-end'
+                          ? 'text-right pr-0'
+                          : 'text-center';
+                      const statusClasses =
+                        status === 'available'
+                          ? `bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-700 ${alignClass}`
+                          : status.startsWith('required')
+                          ? `bg-gradient-to-br from-green-600 to-green-800 text-white border-green-800 ${alignClass}`
+                          : `bg-gray-600 text-gray-300 border-gray-700 ${alignClass}`;
+                      return (
+                        <button
+                          key={char}
+                          onClick={() => onLetterClick(char)}
+                          className={`${base} ${statusClasses}`}
+                        >
+                          {char.toUpperCase()}
+                        </button>
+                      );
+                    })}
+                    {rowIndex === rows.length - 1 && onShowGroups && (
+                      <button
+                        onClick={onShowGroups}
+                        className={`py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105 bg-gray-600 text-gray-300 border-gray-700 col-span-2`}
+                      >
+                        Groups
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
     </div>
   );
 };

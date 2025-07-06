@@ -22,6 +22,7 @@ export default function Home({ wordList }: HomeProps) {
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [letterGroups, setLetterGroups] = useState<string>('');
+  const [showLetterGroups, setShowLetterGroups] = useState<boolean>(false);
   const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('length-desc');
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
@@ -142,19 +143,33 @@ export default function Home({ wordList }: HomeProps) {
           </div>
         </div>
       )}
-      <LetterSelector letterStatuses={letterStatuses} onLetterClick={handleLetterClick} />
-      <div className="mb-6 text-center">
-        <label htmlFor="letterGroups" className="mr-2 text-sm font-medium text-gray-700">
-          Letter Groups (e.g., abc,def):
-        </label>
-        <input
-          type="text"
-          id="letterGroups"
-          value={letterGroups}
-          onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
-          className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+      {!showLetterGroups && (
+        <LetterSelector
+          letterStatuses={letterStatuses}
+          onLetterClick={handleLetterClick}
+          onShowGroups={() => setShowLetterGroups(true)}
         />
-      </div>
+      )}
+      {showLetterGroups && (
+        <div className="mb-6 text-center flex items-center justify-center gap-2">
+          <label htmlFor="letterGroups" className="text-sm font-medium text-gray-700">
+            Letter Groups (e.g., abc,def):
+          </label>
+          <input
+            type="text"
+            id="letterGroups"
+            value={letterGroups}
+            onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
+            className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          <button
+            onClick={() => setShowLetterGroups(false)}
+            className="py-2 px-4 text-sm font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300"
+          >
+            Letters
+          </button>
+        </div>
+      )}
       <WordResults
         results={results}
         resultCount={results.length}

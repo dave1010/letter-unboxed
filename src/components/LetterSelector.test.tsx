@@ -55,4 +55,20 @@ describe('LetterSelector', () => {
       'text-center'
     );
   });
+
+  it('renders Groups button and fires callback when clicked', () => {
+    const onLetterClick = vi.fn();
+    const onShowGroups = vi.fn();
+    render(
+      <LetterSelector
+        letterStatuses={initialLetterStatuses}
+        onLetterClick={onLetterClick}
+        onShowGroups={onShowGroups}
+      />
+    );
+    const btn = screen.getByRole('button', { name: 'Groups' });
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
+    expect(onShowGroups).toHaveBeenCalled();
+  });
 });
