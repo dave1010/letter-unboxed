@@ -105,6 +105,19 @@ export default function Home({ wordList }: HomeProps) {
     setSortOrder(sortOrder);
   };
 
+  const handleShowGroups = () => {
+    const letters = Object.keys(letterStatuses)
+      .filter(
+        (char) =>
+          letterStatuses[char] === 'available' ||
+          letterStatuses[char].startsWith('required')
+      )
+      .sort()
+      .join(',');
+    setLetterGroups(letters);
+    setShowLetterGroups(true);
+  };
+
   return (
     <div className="max-w-3xl mx-auto p-4">
       <header className="flex items-center justify-between mb-6">
@@ -147,7 +160,7 @@ export default function Home({ wordList }: HomeProps) {
         <LetterSelector
           letterStatuses={letterStatuses}
           onLetterClick={handleLetterClick}
-          onShowGroups={() => setShowLetterGroups(true)}
+          onShowGroups={handleShowGroups}
         />
       )}
       {showLetterGroups && (
