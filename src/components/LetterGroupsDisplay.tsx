@@ -27,10 +27,10 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
     data: { char, groupIndex },
     attributes: { tabIndex: -1 },
   });
-  const style = isDragging
-    ? { position: 'absolute', width: 0, height: 0 }
+  const style: React.CSSProperties | undefined = isDragging
+    ? ({ position: 'absolute', width: 0, height: 0 } as React.CSSProperties)
     : transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+    ? ({ transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } as React.CSSProperties)
     : undefined;
   const widthClass = isDragging ? '' : 'w-12';
   return (
