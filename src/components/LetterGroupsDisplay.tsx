@@ -27,10 +27,11 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
   return (
     <button
       ref={setNodeRef}
+      type="button"
+      tabIndex={-1}
       style={style}
       aria-label={char.toUpperCase()}
       className={`${getLetterButtonClasses(status, false)} aspect-square w-12`}
-      disabled
       {...listeners}
       {...attributes}
     >
