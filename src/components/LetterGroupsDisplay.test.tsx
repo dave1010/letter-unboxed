@@ -34,4 +34,17 @@ describe('LetterGroupsDisplay', () => {
     const lettersButton = screen.getByRole('button', { name: 'Letters' });
     expect(lettersButton).toHaveClass('text-lg', 'px-4');
   });
+
+  it('draggable letter buttons have tabIndex -1', () => {
+    render(
+      <LetterGroupsDisplay
+        letterStatuses={letterStatuses}
+        letterGroups="a,b"
+        onGroupsChange={() => {}}
+        onShowLetters={() => {}}
+      />
+    );
+    const letterButton = screen.getByRole('button', { name: 'A' });
+    expect(letterButton).toHaveAttribute('tabindex', '-1');
+  });
 });
