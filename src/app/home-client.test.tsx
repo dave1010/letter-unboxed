@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import Home from '../app/home-client';
 import { describe, it, expect, vi } from 'vitest';
 import { encodeState, decodeState } from '../lib/urlState';
@@ -136,23 +136,25 @@ describe('Home', () => {
     expect(letters).toEqual(['A', 'B', 'C']);
   });
 
-  it('updates URL fragment with current state', () => {
+  it('updates URL fragment with current state', async () => {
     render(<Home wordList={mockWordList} />);
     fireEvent.click(screen.getByRole('button', { name: 'A' }));
     fireEvent.change(screen.getByLabelText('Sort:'), { target: { value: 'alphabetical-asc' } });
-    const state = decodeState(window.location.hash);
-    expect(state.letterStatuses.a).toBe('available');
-    expect(state.sortOrder).toBe('alphabetical-asc');
+    await waitFor(() => {
+      const state = decodeState(window.location.hash);
+      expect(state.letterStatuses.a).toBe('available');
+      expect(state.sortOrder).toBe('alphabetical-asc');
+    });
   });
 
-  it('initializes state from URL fragment', () => {
+  it('initializes state from URL fragment', async () => {
     const statuses: Record<string, LetterStatus> = {};
     'abcdefghijklmnopqrstuvwxyz'.split('').forEach(c => { statuses[c] = 'excluded'; });
     statuses.b = 'required-anywhere';
     const encoded = encodeState(statuses, 'b,c', 'alphabetical-asc');
     window.location.hash = '#' + encoded;
     render(<Home wordList={mockWordList} />);
-    const bBtn = screen.getByRole('button', { name: 'B' });
+    const bBtn = await screen.findByRole('button', { name: 'B' });
     expect(bBtn).toHaveClass('border-green-800');
     expect((screen.getByLabelText('Sort:') as HTMLSelectElement).value).toBe('alphabetical-asc');
     fireEvent.click(screen.getByRole('button', { name: 'Groups' }));

@@ -21,16 +21,13 @@ export default function Home({ wordList }: HomeProps) {
     return statuses;
   };
 
-  const initialState = typeof window !== 'undefined'
-    ? decodeState(window.location.hash)
-    : { letterStatuses: defaultStatuses(), letterGroups: '', sortOrder: 'length-desc' as SortOrder };
-
-  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => initialState.letterStatuses);
+  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => defaultStatuses());
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [letterGroups, setLetterGroups] = useState<string>(() => initialState.letterGroups);
+  const [letterGroups, setLetterGroups] = useState<string>('');
   const [showLetterGroups, setShowLetterGroups] = useState<boolean>(false);
-  const [sortOrder, setSortOrder] = useState<SortOrder>(() => initialState.sortOrder);
+  const [sortOrder, setSortOrder] = useState<SortOrder>('length-desc');
+  const [initialised, setInitialised] = useState(false);
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
@@ -38,6 +35,14 @@ export default function Home({ wordList }: HomeProps) {
       setDictionary(new Dictionary(...wordList));
     }
   }, [wordList]);
+
+  useEffect(() => {
+    const state = decodeState(window.location.hash);
+    setLetterStatuses(state.letterStatuses);
+    setLetterGroups(state.letterGroups);
+    setSortOrder(state.sortOrder);
+    setInitialised(true);
+  }, []);
 
   useEffect(() => {
     if (dictionary) {
@@ -88,9 +93,10 @@ export default function Home({ wordList }: HomeProps) {
   }, [letterStatuses, dictionary, sortOrder, letterGroups]);
 
   useEffect(() => {
+    if (!initialised) return;
     const hash = encodeState(letterStatuses, letterGroups, sortOrder);
     window.history.replaceState(null, '', hash ? `#${hash}` : '#');
-  }, [letterStatuses, letterGroups, sortOrder]);
+  }, [letterStatuses, letterGroups, sortOrder, initialised]);
 
   const handleLetterClick = (char: string) => {
     setLetterStatuses((prev) => {
