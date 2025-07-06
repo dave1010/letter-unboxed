@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   DndContext,
   PointerSensor,
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
+  DragOverEvent,
   useDroppable,
   useDraggable,
+  DragOverlay,
 } from '@dnd-kit/core';
 import { LetterStatus, getLetterButtonClasses } from './letterStyles';
-import { moveLetter } from '../lib/letterGroups';
+import { moveLetter, getInsertionIndex } from '../lib/letterGroups';
 
 interface LetterGroupsDisplayProps {
   letterStatuses: Record<string, LetterStatus>;
@@ -19,7 +22,7 @@ interface LetterGroupsDisplayProps {
 }
 
 function DraggableLetter({ char, groupIndex, status }: { char: string; groupIndex: number; status: LetterStatus }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: char,
     data: { char, groupIndex },
     attributes: { tabIndex: -1 },
@@ -33,7 +36,7 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
       type="button"
       style={style}
       aria-label={char.toUpperCase()}
-      className={`${getLetterButtonClasses(status, false)} aspect-square w-12 touch-none`}
+      className={`${getLetterButtonClasses(status, false)} aspect-square w-12 touch-none ${isDragging ? 'opacity-0' : ''}`}
       {...listeners}
       {...attributes}
     >
@@ -42,23 +45,48 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
   );
 }
 
-function LetterGroup({ letters, index, statuses }: { letters: string; index: number; statuses: Record<string, LetterStatus> }) {
-  const { setNodeRef, isOver } = useDroppable({ id: index });
+function LetterGroup({ letters, index, statuses, isDropTarget, insertionIndex }: { letters: string; index: number; statuses: Record<string, LetterStatus>; isDropTarget: boolean; insertionIndex: number | null }) {
+  const { setNodeRef } = useDroppable({ id: index });
   return (
     <div
       ref={setNodeRef}
-      className={`p-1 border-2 border-gray-500 rounded flex gap-1 min-w-14 ${isOver ? 'bg-gray-700/50' : ''}`}
+      className={`p-1 border-2 rounded flex gap-1 min-w-14 ${isDropTarget ? 'border-blue-500 bg-blue-800/50' : 'border-gray-500'}`}
     >
-      {letters.split('').map((char) => (
-        <DraggableLetter key={char} char={char} groupIndex={index} status={statuses[char]} />
+      {letters.split('').map((char, i) => (
+        <React.Fragment key={char}>
+          {isDropTarget && insertionIndex === i && (
+            <span className="w-12 border-2 border-dashed border-blue-400 rounded" />
+          )}
+          <DraggableLetter char={char} groupIndex={index} status={statuses[char]} />
+        </React.Fragment>
       ))}
+      {isDropTarget && insertionIndex === letters.length && (
+        <span className="w-12 border-2 border-dashed border-blue-400 rounded" />
+      )}
     </div>
   );
 }
 
-const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuses, letterGroups, onGroupsChange, onShowLetters }) => {
+const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
+  letterStatuses,
+  letterGroups,
+  onGroupsChange,
+  onShowLetters,
+}) => {
   const groups = letterGroups ? letterGroups.split(',').filter(Boolean) : [];
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 0 } }));
+
+  const [activeChar, setActiveChar] = useState<string | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
+
+  const handleDragStart = (event: DragStartEvent) => {
+    const data = event.active.data.current as { char: string; groupIndex: number } | undefined;
+    setActiveChar(data?.char || null);
+  };
+
+  const handleDragOver = (event: DragOverEvent) => {
+    setOverIndex(event.over ? Number(event.over.id) : null);
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -67,13 +95,27 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuse
     const to = over ? Number(over.id) : null;
     const updated = moveLetter(groups, data.char, data.groupIndex, to);
     onGroupsChange(updated.join(','));
+    setActiveChar(null);
+    setOverIndex(null);
   };
 
   return (
-    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragOver={handleDragOver}
+      onDragEnd={handleDragEnd}
+    >
       <div className="mb-6 text-center flex flex-wrap justify-center gap-2">
         {groups.map((group, index) => (
-          <LetterGroup key={index} letters={group} index={index} statuses={letterStatuses} />
+          <LetterGroup
+            key={index}
+            letters={group}
+            index={index}
+            statuses={letterStatuses}
+            isDropTarget={overIndex === index}
+            insertionIndex={activeChar && overIndex === index ? getInsertionIndex(group, activeChar) : null}
+          />
         ))}
         <button
           onClick={onShowLetters}
@@ -82,6 +124,13 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuse
           Letters
         </button>
       </div>
+      <DragOverlay>
+        {activeChar ? (
+          <button className={`${getLetterButtonClasses(letterStatuses[activeChar], false)} aspect-square w-12 touch-none`}>
+            {activeChar.toUpperCase()}
+          </button>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 };

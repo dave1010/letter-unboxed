@@ -1,4 +1,13 @@
-export function moveLetter(groups: string[], char: string, from: number, to: number | null): string[] {
+function sortLetters(group: string): string {
+  return group.split('').sort().join('');
+}
+
+export function moveLetter(
+  groups: string[],
+  char: string,
+  from: number,
+  to: number | null,
+): string[] {
   const updated = [...groups];
   updated[from] = updated[from].replace(char, '');
   const removed = updated[from] === '';
@@ -18,5 +27,13 @@ export function moveLetter(groups: string[], char: string, from: number, to: num
       updated[target] = (updated[target] || '') + char;
     }
   }
-  return updated;
+  return updated.map(sortLetters);
+}
+
+export function getInsertionIndex(group: string, char: string): number {
+  const letters = group.split('');
+  for (let i = 0; i < letters.length; i++) {
+    if (char < letters[i]) return i;
+  }
+  return letters.length;
 }
