@@ -21,6 +21,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+Use the **Groups** button on the on-screen keyboard to reveal the letter group controls. Press **Letters** to return to the keyboard.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 To build the project for production:
