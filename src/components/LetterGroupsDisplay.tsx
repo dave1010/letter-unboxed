@@ -24,14 +24,16 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
     data: { char, groupIndex },
     attributes: { tabIndex: -1 },
   });
-  const style = transform ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } : undefined;
+  const style = transform
+    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+    : undefined;
   return (
     <button
       ref={setNodeRef}
       type="button"
       style={style}
       aria-label={char.toUpperCase()}
-      className={`${getLetterButtonClasses(status, false)} aspect-square w-12`}
+      className={`${getLetterButtonClasses(status, false)} aspect-square w-12 touch-none`}
       {...listeners}
       {...attributes}
     >
