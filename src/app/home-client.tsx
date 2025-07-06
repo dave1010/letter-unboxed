@@ -220,6 +220,8 @@ export default function Home({ wordList }: HomeProps) {
       {showLetterGroups && (
         <LetterGroupsDisplay
           letterStatuses={letterStatuses}
+          letterGroups={letterGroups}
+          onGroupsChange={setLetterGroups}
           onShowLetters={() => setShowLetterGroups(false)}
         />
       )}

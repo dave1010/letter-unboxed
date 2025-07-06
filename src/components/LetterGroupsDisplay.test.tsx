@@ -13,6 +13,8 @@ describe('LetterGroupsDisplay', () => {
     render(
       <LetterGroupsDisplay
         letterStatuses={letterStatuses}
+        letterGroups="a,b"
+        onGroupsChange={() => {}}
         onShowLetters={() => {}}
       />
     );
@@ -21,7 +23,14 @@ describe('LetterGroupsDisplay', () => {
   });
 
   it('renders Letters button with large text', () => {
-    render(<LetterGroupsDisplay letterStatuses={letterStatuses} onShowLetters={() => {}} />);
+    render(
+      <LetterGroupsDisplay
+        letterStatuses={letterStatuses}
+        letterGroups="a,b"
+        onGroupsChange={() => {}}
+        onShowLetters={() => {}}
+      />
+    );
     const lettersButton = screen.getByRole('button', { name: 'Letters' });
     expect(lettersButton).toHaveClass('text-lg', 'px-4');
   });
