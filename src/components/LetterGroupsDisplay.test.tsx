@@ -1,0 +1,23 @@
+import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import LetterGroupsDisplay from '../components/LetterGroupsDisplay';
+
+describe('LetterGroupsDisplay', () => {
+  const letterStatuses = {
+    a: 'available',
+    b: 'required-anywhere',
+    c: 'excluded',
+  } as const;
+
+  it('uses grid layout for letters', () => {
+    render(<LetterGroupsDisplay letterStatuses={letterStatuses} onShowLetters={() => {}} />);
+    const lettersButton = screen.getByRole('button', { name: 'Letters' });
+    expect(lettersButton.parentElement).toHaveClass('grid', 'grid-cols-10');
+  });
+
+  it('renders Letters button with large text', () => {
+    render(<LetterGroupsDisplay letterStatuses={letterStatuses} onShowLetters={() => {}} />);
+    const lettersButton = screen.getByRole('button', { name: 'Letters' });
+    expect(lettersButton).toHaveClass('text-lg');
+  });
+});
