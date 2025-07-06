@@ -124,17 +124,31 @@ export default function Home({ wordList }: HomeProps) {
   };
 
   const handleShowGroups = () => {
+    const selected = Object.keys(letterStatuses)
+      .filter(
+        (char) =>
+          letterStatuses[char] === 'available' ||
+          letterStatuses[char].startsWith('required')
+      )
+      .sort();
+
+    const selectedSet = new Set(selected);
+    let groups = letterGroups ? letterGroups.split(',').filter(Boolean) : [];
+
     if (!letterGroups) {
-      const letters = Object.keys(letterStatuses)
-        .filter(
-          (char) =>
-            letterStatuses[char] === 'available' ||
-            letterStatuses[char].startsWith('required')
-        )
-        .sort()
-        .join(',');
-      setLetterGroups(letters);
+      groups = selected.map(ch => ch);
+    } else {
+      groups = groups
+        .map(g => g.split('').filter(ch => selectedSet.has(ch)).join(''))
+        .filter(g => g);
+
+      const grouped = new Set(groups.join(''));
+      selected.forEach(ch => {
+        if (!grouped.has(ch)) groups.push(ch);
+      });
     }
+
+    setLetterGroups(groups.join(','));
     setShowLetterGroups(true);
   };
 

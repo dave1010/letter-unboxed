@@ -151,6 +151,7 @@ describe('Home', () => {
     const statuses: Record<string, LetterStatus> = {};
     'abcdefghijklmnopqrstuvwxyz'.split('').forEach(c => { statuses[c] = 'excluded'; });
     statuses.b = 'required-anywhere';
+    statuses.c = 'available';
     const encoded = encodeState(statuses, 'b,c', 'alphabetical-asc');
     window.location.hash = '#' + encoded;
     render(<Home wordList={mockWordList} />);
@@ -160,5 +161,21 @@ describe('Home', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Groups' }));
     const letters = screen.getAllByRole('button').filter(btn => /^[A-Z]$/.test(btn.textContent || '')).map(btn => btn.textContent);
     expect(letters).toEqual(['B', 'C']);
+  });
+
+  it('updates groups when letters change after loading from fragment', async () => {
+    const statuses: Record<string, LetterStatus> = {};
+    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(c => { statuses[c] = 'excluded'; });
+    statuses.a = 'available';
+    const encoded = encodeState(statuses, 'a', 'length-desc');
+    window.location.hash = '#' + encoded;
+    render(<Home wordList={mockWordList} />);
+    await screen.findByRole('button', { name: 'A' });
+    fireEvent.click(screen.getByRole('button', { name: 'B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Groups' }));
+    const letters = screen.getAllByRole('button')
+      .filter(btn => /^[A-Z]$/.test(btn.textContent || ''))
+      .map(btn => btn.textContent);
+    expect(letters).toEqual(['A', 'B']);
   });
 });
