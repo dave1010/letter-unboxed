@@ -96,23 +96,23 @@ describe('Home', () => {
     expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
   });
 
-  it('toggles letter group controls when Groups and Letters buttons are clicked', () => {
+  it('toggles group view when Groups and Letters buttons are clicked', () => {
     render(<Home wordList={mockWordList} />);
 
-    // Groups button should be visible and input hidden initially
-    expect(screen.queryByLabelText(/Letter Groups/)).not.toBeInTheDocument();
+    // Groups button should be visible and group view hidden initially
+    expect(screen.queryByRole('button', { name: 'Letters' })).not.toBeInTheDocument();
     const groupsButton = screen.getByRole('button', { name: 'Groups' });
     fireEvent.click(groupsButton);
-    // Now input should be visible and keyboard hidden
-    expect(screen.getByLabelText(/Letter Groups/)).toBeInTheDocument();
+    // Now group view should show and keyboard hidden
+    expect(screen.getByRole('button', { name: 'Letters' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'A' })).not.toBeInTheDocument();
     const lettersButton = screen.getByRole('button', { name: 'Letters' });
     fireEvent.click(lettersButton);
-    expect(screen.queryByLabelText(/Letter Groups/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Letters' })).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'A' })).toBeInTheDocument();
   });
 
-  it('populates letter groups with available and required letters', () => {
+  it('shows selected letters as individual groups', () => {
     render(<Home wordList={mockWordList} />);
 
     // make some letters available/required
@@ -123,6 +123,10 @@ describe('Home', () => {
     fireEvent.click(screen.getByRole('button', { name: 'C' }));
 
     fireEvent.click(screen.getByRole('button', { name: 'Groups' }));
-    expect(screen.getByLabelText(/Letter Groups/)).toHaveValue('a,b,c');
+    const letterButtons = screen
+      .getAllByRole('button')
+      .filter(btn => /^[A-Z]$/.test(btn.textContent || ''));
+    const letters = letterButtons.map(btn => btn.textContent);
+    expect(letters).toEqual(['A', 'B', 'C']);
   });
 });

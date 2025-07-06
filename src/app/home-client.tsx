@@ -4,12 +4,12 @@ import { useState, useEffect } from 'react';
 import { Dictionary } from '../lib/dictionary';
 import LetterSelector from '../components/LetterSelector';
 import WordResults from '../components/WordResults';
+import LetterGroupsDisplay from '../components/LetterGroupsDisplay';
+import type { LetterStatus } from '../components/letterStyles';
 
 interface HomeProps {
   wordList: string[];
 }
-
-type LetterStatus = 'available' | 'required-start' | 'required-anywhere' | 'required-end' | 'excluded';
 
 export default function Home({ wordList }: HomeProps) {
   const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => {
@@ -164,24 +164,10 @@ export default function Home({ wordList }: HomeProps) {
         />
       )}
       {showLetterGroups && (
-        <div className="mb-6 text-center flex items-center justify-center gap-2">
-          <label htmlFor="letterGroups" className="text-sm font-medium text-gray-700">
-            Letter Groups (e.g., abc,def):
-          </label>
-          <input
-            type="text"
-            id="letterGroups"
-            value={letterGroups}
-            onChange={(e) => setLetterGroups(e.target.value.toLowerCase())}
-            className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-          />
-          <button
-            onClick={() => setShowLetterGroups(false)}
-            className="py-2 px-4 text-sm font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300"
-          >
-            Letters
-          </button>
-        </div>
+        <LetterGroupsDisplay
+          letterStatuses={letterStatuses}
+          onShowLetters={() => setShowLetterGroups(false)}
+        />
       )}
       <WordResults
         results={results}

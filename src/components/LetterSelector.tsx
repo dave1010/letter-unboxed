@@ -1,6 +1,5 @@
 import React from 'react';
-
-type LetterStatus = 'available' | 'required-start' | 'required-anywhere' | 'required-end' | 'excluded';
+import { LetterStatus, getLetterButtonClasses } from './letterStyles';
 
 interface LetterSelectorProps {
   letterStatuses: Record<string, LetterStatus>;
@@ -35,25 +34,11 @@ interface LetterSelectorProps {
                   <div key={row} className="grid grid-cols-10 gap-1 w-full">
                     {row.split('').map((char) => {
                       const status = letterStatuses[char];
-                      const base =
-                        'py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105';
-                      const alignClass =
-                        status === 'required-start'
-                          ? 'text-left pl-0'
-                          : status === 'required-end'
-                          ? 'text-right pr-0'
-                          : 'text-center';
-                      const statusClasses =
-                        status === 'available'
-                          ? `bg-gradient-to-br from-blue-500 to-blue-700 text-white border-blue-700 ${alignClass}`
-                          : status.startsWith('required')
-                          ? `bg-gradient-to-br from-green-600 to-green-800 text-white border-green-800 ${alignClass}`
-                          : `bg-gray-600 text-gray-300 border-gray-700 ${alignClass}`;
                       return (
                         <button
                           key={char}
                           onClick={() => onLetterClick(char)}
-                          className={`${base} ${statusClasses}`}
+                          className={getLetterButtonClasses(status)}
                         >
                           {char.toUpperCase()}
                         </button>
