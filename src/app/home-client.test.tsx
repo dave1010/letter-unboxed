@@ -111,4 +111,18 @@ describe('Home', () => {
     expect(screen.queryByLabelText(/Letter Groups/)).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'A' })).toBeInTheDocument();
   });
+
+  it('populates letter groups with available and required letters', () => {
+    render(<Home wordList={mockWordList} />);
+
+    // make some letters available/required
+    fireEvent.click(screen.getByRole('button', { name: 'B' }));
+    fireEvent.click(screen.getByRole('button', { name: 'A' }));
+    fireEvent.click(screen.getByRole('button', { name: 'C' }));
+    fireEvent.click(screen.getByRole('button', { name: 'C' }));
+    fireEvent.click(screen.getByRole('button', { name: 'C' }));
+
+    fireEvent.click(screen.getByRole('button', { name: 'Groups' }));
+    expect(screen.getByLabelText(/Letter Groups/)).toHaveValue('a,b,c');
+  });
 });
