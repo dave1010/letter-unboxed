@@ -17,7 +17,10 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuse
         <div key={char} className="p-1 border-2 border-gray-500 rounded">
           <button
             aria-label={char.toUpperCase()}
-            className={getLetterButtonClasses(letterStatuses[char], false)}
+            className={`${getLetterButtonClasses(
+              letterStatuses[char],
+              false
+            )} aspect-square w-12`}
             disabled
           >
             {char.toUpperCase()}
@@ -26,7 +29,7 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({ letterStatuse
       ))}
       <button
         onClick={onShowLetters}
-        className="py-2 px-4 text-sm font-bold rounded border-2 border-gray-700 bg-gray-600 text-gray-300"
+        className="py-2 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105 bg-gray-600 text-gray-300 border-gray-700"
       >
         Letters
       </button>
