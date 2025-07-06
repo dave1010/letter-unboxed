@@ -1,10 +1,16 @@
 import React from 'react';
 
+export type SortOrder =
+  | 'alphabetical-asc'
+  | 'alphabetical-desc'
+  | 'length-asc'
+  | 'length-desc';
+
 interface WordResultsProps {
   results: string[];
   resultCount?: number;
-  onSortChange?: (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => void;
-  sortOrder?: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc';
+  onSortChange?: (sortOrder: SortOrder) => void;
+  sortOrder?: SortOrder;
 }
 
 const WordResults: React.FC<WordResultsProps> = ({

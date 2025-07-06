@@ -3,27 +3,34 @@
 import { useState, useEffect } from 'react';
 import { Dictionary } from '../lib/dictionary';
 import LetterSelector from '../components/LetterSelector';
-import WordResults from '../components/WordResults';
+import WordResults, { SortOrder } from '../components/WordResults';
 import LetterGroupsDisplay from '../components/LetterGroupsDisplay';
 import type { LetterStatus } from '../components/letterStyles';
+import { encodeState, decodeState } from '../lib/urlState';
 
 interface HomeProps {
   wordList: string[];
 }
 
 export default function Home({ wordList }: HomeProps) {
-  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => {
-    const initialStatuses: Record<string, LetterStatus> = {};
+  const defaultStatuses = () => {
+    const statuses: Record<string, LetterStatus> = {};
     'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
-      initialStatuses[char] = 'excluded';
+      statuses[char] = 'excluded';
     });
-    return initialStatuses;
-  });
+    return statuses;
+  };
+
+  const initialState = typeof window !== 'undefined'
+    ? decodeState(window.location.hash)
+    : { letterStatuses: defaultStatuses(), letterGroups: '', sortOrder: 'length-desc' as SortOrder };
+
+  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => initialState.letterStatuses);
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [letterGroups, setLetterGroups] = useState<string>('');
+  const [letterGroups, setLetterGroups] = useState<string>(() => initialState.letterGroups);
   const [showLetterGroups, setShowLetterGroups] = useState<boolean>(false);
-  const [sortOrder, setSortOrder] = useState<'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc'>('length-desc');
+  const [sortOrder, setSortOrder] = useState<SortOrder>(() => initialState.sortOrder);
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
   useEffect(() => {
@@ -80,6 +87,11 @@ export default function Home({ wordList }: HomeProps) {
     }
   }, [letterStatuses, dictionary, sortOrder, letterGroups]);
 
+  useEffect(() => {
+    const hash = encodeState(letterStatuses, letterGroups, sortOrder);
+    window.history.replaceState(null, '', hash ? `#${hash}` : '#');
+  }, [letterStatuses, letterGroups, sortOrder]);
+
   const handleLetterClick = (char: string) => {
     setLetterStatuses((prev) => {
       const current = prev[char];
@@ -101,20 +113,22 @@ export default function Home({ wordList }: HomeProps) {
     });
   };
 
-  const handleSortChange = (sortOrder: 'alphabetical-asc' | 'alphabetical-desc' | 'length-asc' | 'length-desc') => {
+  const handleSortChange = (sortOrder: SortOrder) => {
     setSortOrder(sortOrder);
   };
 
   const handleShowGroups = () => {
-    const letters = Object.keys(letterStatuses)
-      .filter(
-        (char) =>
-          letterStatuses[char] === 'available' ||
-          letterStatuses[char].startsWith('required')
-      )
-      .sort()
-      .join(',');
-    setLetterGroups(letters);
+    if (!letterGroups) {
+      const letters = Object.keys(letterStatuses)
+        .filter(
+          (char) =>
+            letterStatuses[char] === 'available' ||
+            letterStatuses[char].startsWith('required')
+        )
+        .sort()
+        .join(',');
+      setLetterGroups(letters);
+    }
     setShowLetterGroups(true);
   };
 

@@ -1,6 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import Home from '../app/home-client';
 import { describe, it, expect, vi } from 'vitest';
+import { encodeState, decodeState } from '../lib/urlState';
+import type { LetterStatus } from '../components/letterStyles';
 
 
 // Mock the Dictionary class
@@ -35,6 +37,10 @@ vi.mock('../lib/dictionary', () => ({
 
 describe('Home', () => {
   const mockWordList = ['cat', 'dog', 'apple', 'banana', 'act', 'cot'];
+
+  beforeEach(() => {
+    window.location.hash = '';
+  });
 
   it('renders the main heading', () => {
     render(<Home wordList={mockWordList} />);
@@ -128,5 +134,29 @@ describe('Home', () => {
       .filter(btn => /^[A-Z]$/.test(btn.textContent || ''));
     const letters = letterButtons.map(btn => btn.textContent);
     expect(letters).toEqual(['A', 'B', 'C']);
+  });
+
+  it('updates URL fragment with current state', () => {
+    render(<Home wordList={mockWordList} />);
+    fireEvent.click(screen.getByRole('button', { name: 'A' }));
+    fireEvent.change(screen.getByLabelText('Sort:'), { target: { value: 'alphabetical-asc' } });
+    const state = decodeState(window.location.hash);
+    expect(state.letterStatuses.a).toBe('available');
+    expect(state.sortOrder).toBe('alphabetical-asc');
+  });
+
+  it('initializes state from URL fragment', () => {
+    const statuses: Record<string, LetterStatus> = {};
+    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(c => { statuses[c] = 'excluded'; });
+    statuses.b = 'required-anywhere';
+    const encoded = encodeState(statuses, 'b,c', 'alphabetical-asc');
+    window.location.hash = '#' + encoded;
+    render(<Home wordList={mockWordList} />);
+    const bBtn = screen.getByRole('button', { name: 'B' });
+    expect(bBtn).toHaveClass('border-green-800');
+    expect((screen.getByLabelText('Sort:') as HTMLSelectElement).value).toBe('alphabetical-asc');
+    fireEvent.click(screen.getByRole('button', { name: 'Groups' }));
+    const letters = screen.getAllByRole('button').filter(btn => /^[A-Z]$/.test(btn.textContent || '')).map(btn => btn.textContent);
+    expect(letters).toEqual(['B', 'C']);
   });
 });
