@@ -168,6 +168,9 @@ export default function Home({ wordList }: HomeProps) {
                 </span>
               </div>
               <p>
+                Drag letters into groups to stop them being used consecutively.
+              </p>
+              <p>
                 <a
                   href="https://dave.engineer"
                   className="underline text-blue-700"
