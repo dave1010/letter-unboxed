@@ -68,13 +68,12 @@ function LetterGroup({
   draggingFrom: number | null;
 }) {
   const { setNodeRef } = useDroppable({ id: index });
-  const adjustedLetters =
-    draggingFrom === index && activeChar ? letters.replace(activeChar, '') : letters;
-  if (adjustedLetters.length === 0 && !isDropTarget) {
+  const draggingHere = draggingFrom === index && activeChar;
+  if (letters.length === 1 && draggingHere && !isDropTarget) {
     return null;
   }
   const placeholder = isDropTarget ? 1 : 0;
-  const widthRem = Math.max(1, adjustedLetters.length + placeholder) * 3.5;
+  const widthRem = Math.max(1, letters.length - (draggingHere ? 1 : 0) + placeholder) * 3.5;
   return (
     <div
       ref={setNodeRef}
@@ -83,7 +82,7 @@ function LetterGroup({
         isDropTarget ? 'border-blue-500 bg-blue-800/50' : 'border-gray-500'
       }`}
     >
-      {adjustedLetters.split('').map((char, i) => (
+      {letters.split('').map((char, i) => (
         <React.Fragment key={char}>
           {isDropTarget && insertionIndex === i && (
             <span className="w-12 border-2 border-dashed border-blue-400 rounded" />
@@ -91,7 +90,7 @@ function LetterGroup({
           <DraggableLetter char={char} groupIndex={index} status={statuses[char]} />
         </React.Fragment>
       ))}
-      {isDropTarget && insertionIndex === adjustedLetters.length && (
+      {isDropTarget && insertionIndex === letters.length && (
         <span className="w-12 border-2 border-dashed border-blue-400 rounded" />
       )}
     </div>
