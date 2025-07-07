@@ -25,14 +25,17 @@ const WordResults: React.FC<WordResultsProps> = ({ results, lettersSelected }) =
         </div>
       ) : (
         <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 overflow-y-auto border border-gray-600 p-2 rounded-md bg-gray-800/50">
-          {results.map((word) => (
-            <li
-              key={word}
-              className="bg-gray-700 border border-gray-600 rounded-md p-2 text-center shadow-sm text-white"
-            >
-              {word}
-            </li>
-          ))}
+          {results.map((word) => {
+            const longWord = word.length >= 15;
+            return (
+              <li
+                key={word}
+                className={`bg-gray-700 border border-gray-600 rounded-md p-2 text-center shadow-sm text-white${longWord ? ' text-sm' : ''}`}
+              >
+                {word}
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
