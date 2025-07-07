@@ -51,7 +51,7 @@ const WordResults: React.FC<WordResultsProps> = ({
           No words found for the selected letters.
         </p>
       )}
-      <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 max-h-96 overflow-y-auto border border-gray-600 p-2 rounded-md bg-gray-800/50">
+      <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 overflow-y-auto border border-gray-600 p-2 rounded-md bg-gray-800/50">
         {results.map((word) => (
           <li
             key={word}
