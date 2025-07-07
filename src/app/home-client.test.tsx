@@ -99,8 +99,10 @@ describe("Home", () => {
     // Check if LetterSelector is rendered (by checking one of its internal elements)
     expect(screen.getByRole("button", { name: "A" })).toBeInTheDocument();
 
-    // Check if WordResults is rendered (by checking the sort dropdown)
-    expect(screen.getByLabelText("Sort:")).toBeInTheDocument();
+    // Check if WordResults is rendered (by checking the no-results message)
+    expect(
+      screen.getByText("No words found for the selected letters.")
+    ).toBeInTheDocument();
   });
 
   it("toggles group view when Groups and Letters buttons are clicked", () => {
@@ -156,6 +158,7 @@ describe("Home", () => {
   it("updates URL fragment with current state", async () => {
     render(<Home wordList={mockWordList} />);
     fireEvent.click(screen.getByRole("button", { name: "A" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open help" }));
     fireEvent.change(screen.getByLabelText("Sort:"), {
       target: { value: "alphabetical-asc" },
     });
@@ -178,6 +181,7 @@ describe("Home", () => {
     render(<Home wordList={mockWordList} />);
     const bBtn = await screen.findByRole("button", { name: "B" });
     expect(bBtn).toHaveClass("border-green-800");
+    fireEvent.click(screen.getByRole("button", { name: "Open help" }));
     expect((screen.getByLabelText("Sort:") as HTMLSelectElement).value).toBe(
       "alphabetical-asc",
     );
@@ -238,6 +242,7 @@ describe("Home", () => {
     fireEvent.click(screen.getByRole("button", { name: "C" }));
     fireEvent.click(screen.getByRole("button", { name: "A" }));
     fireEvent.click(screen.getByRole("button", { name: "T" }));
+    fireEvent.click(screen.getByRole("button", { name: "Open help" }));
     fireEvent.change(screen.getByLabelText("Sort:"), {
       target: { value: "alphabetical-asc" },
     });
