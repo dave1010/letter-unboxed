@@ -30,5 +30,13 @@ describe('WordResults', () => {
     ).toBeInTheDocument();
   });
 
+  it('uses smaller text for words 15 characters or longer', () => {
+    const words = ['short', 'averyverylonglongword'];
+    render(<WordResults results={words} lettersSelected={true} />);
+
+    expect(screen.getByText('averyverylonglongword')).toHaveClass('text-sm');
+    expect(screen.getByText('short')).not.toHaveClass('text-sm');
+  });
+
   
 });
