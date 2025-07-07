@@ -18,7 +18,7 @@ const WordResults: React.FC<WordResultsProps> = ({ results, lettersSelected }) =
     "Tap again to require words to use them at the start, anywhere in the word or at the end.";
   const noWordsMessage = "No words found for the selected letters.";
   return (
-    <div className="pt-5 h-full flex flex-col">
+    <div className="h-full flex flex-col">
       {results.length === 0 ? (
         <div className="flex-grow flex items-center justify-center">
           {lettersSelected ? (
