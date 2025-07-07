@@ -64,9 +64,11 @@ describe("Home", () => {
   it("filters words based on letter status changes", async () => {
     render(<Home wordList={mockWordList} />);
 
-    // Initially, no words should be found as all letters are unavailable
+    // Initially, a prompt should show as no letters are selected
     expect(
-      screen.getByText("No words found for the selected letters."),
+      screen.getByText(
+        "Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end.",
+      ),
     ).toBeInTheDocument();
 
     // Click 'C' to make it available
@@ -99,9 +101,11 @@ describe("Home", () => {
     // Check if LetterSelector is rendered (by checking one of its internal elements)
     expect(screen.getByRole("button", { name: "A" })).toBeInTheDocument();
 
-    // Check if WordResults is rendered (by checking the no-results message)
+    // Check if WordResults is rendered (by checking the prompt message)
     expect(
-      screen.getByText("No words found for the selected letters.")
+      screen.getByText(
+        "Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end."
+      )
     ).toBeInTheDocument();
   });
 
