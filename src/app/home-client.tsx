@@ -23,6 +23,7 @@ export default function Home({ wordList }: HomeProps) {
     Record<string, LetterStatus>
   >(() => createDefaultStatuses());
   const [results, setResults] = useState<string[]>([]);
+  const [enableAllNext, setEnableAllNext] = useState(true);
   const [showHelp, setShowHelp] = useState<boolean>(false);
   const [letterGroups, setLetterGroups] = useState<string>("");
   const [showLetterGroups, setShowLetterGroups] = useState<boolean>(false);
@@ -58,6 +59,17 @@ export default function Home({ wordList }: HomeProps) {
 
   const handleLetterClick = (char: string) => {
     setLetterStatuses((prev) => ({ ...prev, [char]: cycleMap[prev[char]] }));
+  };
+
+  const handleToggleAll = () => {
+    setLetterStatuses((prev) => {
+      const updated: Record<string, LetterStatus> = {};
+      Object.keys(prev).forEach((c) => {
+        updated[c] = enableAllNext ? 'available' : 'excluded';
+      });
+      return updated;
+    });
+    setEnableAllNext(!enableAllNext);
   };
 
   const handleSortChange = (sortOrder: SortOrder) => {
@@ -170,6 +182,8 @@ export default function Home({ wordList }: HomeProps) {
           letterStatuses={letterStatuses}
           onLetterClick={handleLetterClick}
           onShowGroups={handleShowGroups}
+          onToggleAll={handleToggleAll}
+          toggleAllNext={enableAllNext}
         />
       )}
       {showLetterGroups && (

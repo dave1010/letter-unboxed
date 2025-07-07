@@ -141,6 +141,18 @@ describe("Home", () => {
     expect(letters).toEqual(["A", "B", "C"]);
   });
 
+  it("toggles all letters available and back", () => {
+    render(<Home wordList={mockWordList} />);
+    const toggle = screen.getByRole("button", { name: "Enable all letters" });
+    fireEvent.click(toggle);
+    expect(screen.getByRole("button", { name: "Clear all letters" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "A" })).toHaveClass("border-blue-700");
+    const clear = screen.getByRole("button", { name: "Clear all letters" });
+    fireEvent.click(clear);
+    expect(screen.getByRole("button", { name: "Enable all letters" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "A" })).toHaveClass("border-gray-700");
+  });
+
   it("updates URL fragment with current state", async () => {
     render(<Home wordList={mockWordList} />);
     fireEvent.click(screen.getByRole("button", { name: "A" }));

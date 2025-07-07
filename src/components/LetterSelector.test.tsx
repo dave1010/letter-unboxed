@@ -71,4 +71,21 @@ describe('LetterSelector', () => {
     fireEvent.click(btn);
     expect(onShowGroups).toHaveBeenCalled();
   });
+
+  it('shows toggle-all button and fires callback when clicked', () => {
+    const onLetterClick = vi.fn();
+    const onToggleAll = vi.fn();
+    render(
+      <LetterSelector
+        letterStatuses={initialLetterStatuses}
+        onLetterClick={onLetterClick}
+        onToggleAll={onToggleAll}
+        toggleAllNext={true}
+      />,
+    );
+    const btn = screen.getByRole('button', { name: 'Enable all letters' });
+    expect(btn).toBeInTheDocument();
+    fireEvent.click(btn);
+    expect(onToggleAll).toHaveBeenCalled();
+  });
 });
