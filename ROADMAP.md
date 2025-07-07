@@ -50,10 +50,10 @@ Tasks are only checked when fully complete (tests, docs and lint pass). Keep REA
 - Sort by longest word by default
 
 ### v1.1
-- **TODO** Refactor page components and improve tests. The components have got way too big and complex.
-- **TODO** Ensure switching back and forth between letters and groups persists the groups. Eg if there is a group ABC, then C is excluded, then made available again then it should be in the same group it was before.
-- **TODO** Add a way to make all letters available or unavailable.
-- **TODO** Shift the 2nd and 3rd lines of the keyboard right a bit.
+- Refactored page components and improved tests. The components were too big and complex.
+- Switching back and forth between letters and groups now persists the groups. For example, if there is a group ABC, then C is excluded, then made available again it will remain in the same group.
+- Added a way to make all letters available or unavailable.
+- Shifted the 2nd and 3rd lines of the keyboard right a bit.
 
 ### Offline Support
 - **TODO:** Implement service workers to cache the application

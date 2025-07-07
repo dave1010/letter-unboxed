@@ -62,8 +62,14 @@ npm run cli -- solve abcdefghijkl -m a -c z -d src/dictionary/scowl_100.txt
 
 ## Dictionary Word Lists
 
-The default dictionary comes from the permissively licensed **SCOWL** word lists. Files are plain text with one word per line and are loaded into a `Set` for fast filtering.
+The default dictionary comes from the permissively licensed [**SCOWL** word lists](http://wordlist.aspell.net/). Files are plain text with one word per line and are loaded into a `Set` for fast filtering.
 
 ## Development Notes
 
-This is a Next.js project using TypeScript, Tailwind CSS and Vitest. Continuous Integration runs tests and linting on each commit.
+This is a Next.js project using TypeScript, Tailwind CSS and Vitest. Continuous Integration runs tests and linting on each commit. See [ROADMAP.md](ROADMAP.md) for planned tasks.
+
+The project was primarily built using OpenAI Codex Web, OpenAI Codex CLI, Google Gemini CLI and Google Jules.
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE) for details.
