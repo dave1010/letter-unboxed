@@ -200,7 +200,13 @@ export default function Home({ wordList }: HomeProps) {
         </div>
       )}
       <div className="flex-grow overflow-y-auto">
-        <WordResults results={results} />
+        <WordResults
+          results={results}
+          lettersSelected={Object.values(letterStatuses).some(
+            (status) =>
+              status === "available" || status.startsWith("required")
+          )}
+        />
       </div>
       <div className="flex-none">
         {!showLetterGroups && (
