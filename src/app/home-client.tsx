@@ -82,8 +82,8 @@ export default function Home({ wordList }: HomeProps) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4">
-      <header className="flex items-center justify-between mb-6">
+    <div className="max-w-3xl mx-auto p-4 flex flex-col h-dvh overflow-hidden gap-4">
+      <header className="flex items-center justify-between flex-none">
         <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
           Letter Unboxed
         </h1>
@@ -134,6 +134,28 @@ export default function Home({ wordList }: HomeProps) {
               <p>
                 Drag letters into groups to stop them being used consecutively.
               </p>
+              <div className="flex items-center space-x-2">
+                <label htmlFor="sortOrder" className="text-sm">Sort:</label>
+                <select
+                  id="sortOrder"
+                  value={sortOrder}
+                  onChange={(e) =>
+                    handleSortChange(
+                      e.target.value as
+                        | 'alphabetical-asc'
+                        | 'alphabetical-desc'
+                        | 'length-asc'
+                        | 'length-desc'
+                    )
+                  }
+                  className="px-2 py-1 border border-gray-400 rounded-md text-sm"
+                >
+                  <option value="alphabetical-asc">A-Z</option>
+                  <option value="alphabetical-desc">Z-A</option>
+                  <option value="length-asc">Shortest</option>
+                  <option value="length-desc">Longest</option>
+                </select>
+              </div>
               <p>
                 <a
                   href="https://dave.engineer"
@@ -177,29 +199,28 @@ export default function Home({ wordList }: HomeProps) {
           </div>
         </div>
       )}
-      {!showLetterGroups && (
-        <LetterSelector
-          letterStatuses={letterStatuses}
-          onLetterClick={handleLetterClick}
-          onShowGroups={handleShowGroups}
-          onToggleAll={handleToggleAll}
-          toggleAllNext={enableAllNext}
-        />
-      )}
-      {showLetterGroups && (
-        <LetterGroupsDisplay
-          letterStatuses={letterStatuses}
-          letterGroups={letterGroups}
-          onGroupsChange={setLetterGroups}
-          onShowLetters={() => setShowLetterGroups(false)}
-        />
-      )}
-      <WordResults
-        results={results}
-        resultCount={results.length}
-        onSortChange={handleSortChange}
-        sortOrder={sortOrder}
-      />
+      <div className="flex-grow overflow-y-auto">
+        <WordResults results={results} />
+      </div>
+      <div className="flex-none">
+        {!showLetterGroups && (
+          <LetterSelector
+            letterStatuses={letterStatuses}
+            onLetterClick={handleLetterClick}
+            onShowGroups={handleShowGroups}
+            onToggleAll={handleToggleAll}
+            toggleAllNext={enableAllNext}
+          />
+        )}
+        {showLetterGroups && (
+          <LetterGroupsDisplay
+            letterStatuses={letterStatuses}
+            letterGroups={letterGroups}
+            onGroupsChange={setLetterGroups}
+            onShowLetters={() => setShowLetterGroups(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }
