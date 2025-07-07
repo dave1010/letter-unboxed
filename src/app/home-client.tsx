@@ -83,38 +83,40 @@ export default function Home({ wordList }: HomeProps) {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-4 flex flex-col h-dvh overflow-hidden gap-2">
-      <header className="flex items-center justify-between flex-none py-1">
-        <h1 className="flex flex-col items-center text-3xl font-bold gap-1">
-          <div className="flex gap-1">
+    <div className="max-w-3xl mx-auto p-2 flex flex-col h-dvh overflow-hidden gap-1">
+      <header className="flex items-center justify-between flex-none py-0.5">
+        <h1 className="flex flex-col items-center text-2xl font-bold gap-0.5">
+          <div className="flex gap-0.5">
             {"LETTER".split("").map((ch, i) => (
               <span
                 key={i}
-                className={getLetterButtonClasses(
+                className={`${getLetterButtonClasses(
                   ch === "L"
                     ? "required-start"
                     : ch === "R"
                     ? "required-end"
                     : "available",
                   false,
-                )}
+                  true,
+                )} w-6 inline-flex items-center justify-center`}
               >
                 {ch}
               </span>
             ))}
           </div>
-          <div className="flex gap-1">
-            {"BOXED".split("").map((ch, i) => (
+          <div className="flex gap-0.5">
+            {"UNBOXED".split("").map((ch, i) => (
               <span
                 key={i}
-                className={getLetterButtonClasses(
+                className={`${getLetterButtonClasses(
                   ch === "D"
                     ? "required-end"
                     : ch === "X"
                     ? "required-anywhere"
                     : "available",
                   false,
-                )}
+                  true,
+                )} w-6 inline-flex items-center justify-center`}
               >
                 {ch}
               </span>
@@ -124,7 +126,7 @@ export default function Home({ wordList }: HomeProps) {
         <button
           aria-label={showHelp ? "Close help" : "Open help"}
           onClick={() => setShowHelp(!showHelp)}
-          className={`${getLetterButtonClasses('excluded')} h-10 w-10 flex items-center justify-center`}
+          className={`${getLetterButtonClasses('excluded', false, true)} w-8 h-8 flex items-center justify-center`}
         >
           ?
         </button>
