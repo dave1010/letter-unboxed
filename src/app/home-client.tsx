@@ -1,32 +1,95 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Dictionary } from '../lib/dictionary';
-import LetterSelector from '../components/LetterSelector';
-import WordResults, { SortOrder } from '../components/WordResults';
-import LetterGroupsDisplay from '../components/LetterGroupsDisplay';
-import type { LetterStatus } from '../components/letterStyles';
-import { encodeState, decodeState } from '../lib/urlState';
+import { useState, useEffect } from "react";
+import { Dictionary } from "../lib/dictionary";
+import LetterSelector from "../components/LetterSelector";
+import WordResults, { SortOrder } from "../components/WordResults";
+import LetterGroupsDisplay from "../components/LetterGroupsDisplay";
+import type { LetterStatus } from "../components/letterStyles";
+import { encodeState, decodeState } from "../lib/urlState";
+
+const alphabet = "abcdefghijklmnopqrstuvwxyz";
+
+export function createDefaultStatuses(): Record<string, LetterStatus> {
+  const statuses: Record<string, LetterStatus> = {};
+  alphabet.split("").forEach((char) => {
+    statuses[char] = "excluded";
+  });
+  return statuses;
+}
+
+const cycleMap: Record<LetterStatus, LetterStatus> = {
+  excluded: "available",
+  available: "required-start",
+  "required-start": "required-anywhere",
+  "required-anywhere": "required-end",
+  "required-end": "excluded",
+};
+
+export function computeResults(
+  dictionary: Dictionary | null,
+  letterStatuses: Record<string, LetterStatus>,
+  sortOrder: SortOrder,
+  letterGroups: string,
+): string[] {
+  if (!dictionary) return [];
+
+  const availableLetters = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "available")
+    .join("");
+  const requiredAnywhere = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-anywhere")
+    .join("");
+  const requiredStart = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-start")
+    .join("");
+  const requiredEnd = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-end")
+    .join("");
+  const excludedLetters = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "excluded")
+    .join("");
+
+  const filteredWords = dictionary.filter(
+    availableLetters,
+    requiredAnywhere + requiredStart + requiredEnd,
+    excludedLetters,
+    requiredStart,
+    requiredEnd,
+    letterGroups,
+  );
+
+  const sortedWords = [...filteredWords];
+  switch (sortOrder) {
+    case "alphabetical-asc":
+      sortedWords.sort();
+      break;
+    case "alphabetical-desc":
+      sortedWords.sort().reverse();
+      break;
+    case "length-asc":
+      sortedWords.sort((a, b) => a.length - b.length || a.localeCompare(b));
+      break;
+    case "length-desc":
+      sortedWords.sort((a, b) => b.length - a.length || a.localeCompare(b));
+      break;
+  }
+  return sortedWords.slice(0, 1000);
+}
 
 interface HomeProps {
   wordList: string[];
 }
 
 export default function Home({ wordList }: HomeProps) {
-  const defaultStatuses = () => {
-    const statuses: Record<string, LetterStatus> = {};
-    'abcdefghijklmnopqrstuvwxyz'.split('').forEach(char => {
-      statuses[char] = 'excluded';
-    });
-    return statuses;
-  };
-
-  const [letterStatuses, setLetterStatuses] = useState<Record<string, LetterStatus>>(() => defaultStatuses());
+  const [letterStatuses, setLetterStatuses] = useState<
+    Record<string, LetterStatus>
+  >(() => createDefaultStatuses());
   const [results, setResults] = useState<string[]>([]);
   const [showHelp, setShowHelp] = useState<boolean>(false);
-  const [letterGroups, setLetterGroups] = useState<string>('');
+  const [letterGroups, setLetterGroups] = useState<string>("");
   const [showLetterGroups, setShowLetterGroups] = useState<boolean>(false);
-  const [sortOrder, setSortOrder] = useState<SortOrder>('length-desc');
+  const [sortOrder, setSortOrder] = useState<SortOrder>("length-desc");
   const [initialised, setInitialised] = useState(false);
   const [dictionary, setDictionary] = useState<Dictionary | null>(null);
 
@@ -45,78 +108,19 @@ export default function Home({ wordList }: HomeProps) {
   }, []);
 
   useEffect(() => {
-    if (dictionary) {
-      const availableLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'available'
-      ).join('');
-      const requiredAnywhere = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'required-anywhere'
-      ).join('');
-      const requiredStart = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'required-start'
-      ).join('');
-      const requiredEnd = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'required-end'
-      ).join('');
-      const excludedLetters = Object.keys(letterStatuses).filter(
-        (char) => letterStatuses[char] === 'excluded'
-      ).join('');
-
-      const filteredWords = dictionary.filter(
-        availableLetters,
-        requiredAnywhere + requiredStart + requiredEnd,
-        excludedLetters,
-        requiredStart,
-        requiredEnd,
-        letterGroups
-      );
-
-      const sortedWords = [...filteredWords];
-      switch (sortOrder) {
-        case 'alphabetical-asc':
-          sortedWords.sort();
-          break;
-        case 'alphabetical-desc':
-          sortedWords.sort().reverse();
-          break;
-        case 'length-asc':
-          sortedWords.sort((a, b) => a.length - b.length || a.localeCompare(b));
-          break;
-        case 'length-desc':
-          sortedWords.sort((a, b) => b.length - a.length || a.localeCompare(b));
-          break;
-      }
-      setResults(sortedWords.slice(0, 1000));
-    } else {
-      setResults([]);
-    }
+    setResults(
+      computeResults(dictionary, letterStatuses, sortOrder, letterGroups),
+    );
   }, [letterStatuses, dictionary, sortOrder, letterGroups]);
 
   useEffect(() => {
     if (!initialised) return;
     const hash = encodeState(letterStatuses, letterGroups, sortOrder);
-    window.history.replaceState(null, '', hash ? `#${hash}` : '#');
+    window.history.replaceState(null, "", hash ? `#${hash}` : "#");
   }, [letterStatuses, letterGroups, sortOrder, initialised]);
 
   const handleLetterClick = (char: string) => {
-    setLetterStatuses((prev) => {
-      const current = prev[char];
-      let next: LetterStatus;
-      if (current === 'excluded') {
-        next = 'available';
-      } else if (current === 'available') {
-        next = 'required-start';
-      } else if (current === 'required-start') {
-        next = 'required-anywhere';
-      } else if (current === 'required-anywhere') {
-        next = 'required-end';
-      } else if (current === 'required-end') {
-        next = 'excluded';
-      } else {
-        next = 'excluded';
-      }
-      return { ...prev, [char]: next };
-    });
+    setLetterStatuses((prev) => ({ ...prev, [char]: cycleMap[prev[char]] }));
   };
 
   const handleSortChange = (sortOrder: SortOrder) => {
@@ -127,28 +131,33 @@ export default function Home({ wordList }: HomeProps) {
     const selected = Object.keys(letterStatuses)
       .filter(
         (char) =>
-          letterStatuses[char] === 'available' ||
-          letterStatuses[char].startsWith('required')
+          letterStatuses[char] === "available" ||
+          letterStatuses[char].startsWith("required"),
       )
       .sort();
 
     const selectedSet = new Set(selected);
-    let groups = letterGroups ? letterGroups.split(',').filter(Boolean) : [];
+    let groups = letterGroups ? letterGroups.split(",").filter(Boolean) : [];
 
     if (!letterGroups) {
-      groups = selected.map(ch => ch);
+      groups = selected.map((ch) => ch);
     } else {
       groups = groups
-        .map(g => g.split('').filter(ch => selectedSet.has(ch)).join(''))
-        .filter(g => g);
+        .map((g) =>
+          g
+            .split("")
+            .filter((ch) => selectedSet.has(ch))
+            .join(""),
+        )
+        .filter((g) => g);
 
-      const grouped = new Set(groups.join(''));
-      selected.forEach(ch => {
+      const grouped = new Set(groups.join(""));
+      selected.forEach((ch) => {
         if (!grouped.has(ch)) groups.push(ch);
       });
     }
 
-    setLetterGroups(groups.join(','));
+    setLetterGroups(groups.join(","));
     setShowLetterGroups(true);
   };
 
@@ -159,7 +168,7 @@ export default function Home({ wordList }: HomeProps) {
           Letter Unboxed
         </h1>
         <button
-          aria-label={showHelp ? 'Close help' : 'Open help'}
+          aria-label={showHelp ? "Close help" : "Open help"}
           onClick={() => setShowHelp(!showHelp)}
           className="text-white bg-blue-600 hover:bg-blue-700 h-10 w-10 flex items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
@@ -170,7 +179,7 @@ export default function Home({ wordList }: HomeProps) {
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 max-w-lg mx-4 shadow-2xl border border-gray-200">
             <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-semibold text-gray-800">About</h2>
+              <h2 className="text-2xl font-semibold text-gray-800">About</h2>
               <button
                 aria-label="Close help"
                 onClick={() => setShowHelp(false)}
@@ -181,7 +190,8 @@ export default function Home({ wordList }: HomeProps) {
             </div>
             <div className="space-y-4 text-gray-700">
               <p>
-                Explore potential Letter Boxed words, find anagrams and learn words that start or end with specific letters.
+                Explore potential Letter Boxed words, find anagrams and learn
+                words that start or end with specific letters.
               </p>
               <p>Tap letters to cycle through modes:</p>
               <div className="flex flex-wrap justify-center gap-2">
@@ -213,7 +223,7 @@ export default function Home({ wordList }: HomeProps) {
                 >
                   Made by Dave
                 </a>
-                {' · '}
+                {" · "}
                 <a
                   href="https://github.com/dave1010/letter-unboxed"
                   className="underline text-blue-700"
