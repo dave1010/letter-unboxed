@@ -5,16 +5,36 @@ interface LetterSelectorProps {
   letterStatuses: Record<string, LetterStatus>;
   onLetterClick: (char: string) => void;
   onShowGroups?: () => void;
+  onToggleAll?: () => void;
+  toggleAllNext?: boolean;
 }
 
-        const LetterSelector: React.FC<LetterSelectorProps> = ({ letterStatuses, onLetterClick, onShowGroups }) => {
-          const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
+const LetterSelector: React.FC<LetterSelectorProps> = ({
+  letterStatuses,
+  onLetterClick,
+  onShowGroups,
+  onToggleAll,
+  toggleAllNext,
+}) => {
+  const rows = ['qwertyuiop', 'asdfghjkl', 'zxcvbnm'];
 
   return (
     <div className="mb-6 text-center">
               <div className="space-y-2 w-full max-w-lg mx-auto">
                 {rows.map((row, rowIndex) => (
-                  <div key={row} className="grid grid-cols-10 gap-1 w-full">
+                  <div
+                    key={row}
+                    className={`grid grid-cols-10 gap-1 w-full ${rowIndex === 1 ? 'ml-[5%]' : ''}`}
+                  >
+                    {rowIndex === rows.length - 1 && onToggleAll && (
+                      <button
+                        aria-label={toggleAllNext ? 'Enable all letters' : 'Clear all letters'}
+                        onClick={onToggleAll}
+                        className={getLetterButtonClasses('excluded')}
+                      >
+                        {toggleAllNext ? '🔤' : '🧹'}
+                      </button>
+                    )}
                     {row.split('').map((char) => {
                       const status = letterStatuses[char];
                       return (
