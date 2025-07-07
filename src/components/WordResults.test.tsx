@@ -24,8 +24,11 @@ describe('WordResults', () => {
     render(<WordResults results={[]} lettersSelected={false} />);
 
     expect(
+      screen.getByText('Tap letters to make them available.'),
+    ).toBeInTheDocument();
+    expect(
       screen.getByText(
-        'Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end.',
+        'Tap again to require words to use them at the start, anywhere in the word or at the end.',
       ),
     ).toBeInTheDocument();
   });
