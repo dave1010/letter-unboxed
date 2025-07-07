@@ -43,7 +43,7 @@ describe("Home", () => {
 
   it("renders the main heading", () => {
     render(<Home wordList={mockWordList} />);
-    expect(screen.getByText("Letter Unboxed")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1 })).toBeInTheDocument();
   });
 
   it("initializes letter statuses to unavailable", () => {
@@ -65,9 +65,10 @@ describe("Home", () => {
     render(<Home wordList={mockWordList} />);
 
     // Initially, a prompt should show as no letters are selected
+    expect(screen.getByText('Tap letters to make them available.')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end.",
+        'Tap again to require words to use them at the start, anywhere in the word or at the end.',
       ),
     ).toBeInTheDocument();
 
@@ -102,9 +103,10 @@ describe("Home", () => {
     expect(screen.getByRole("button", { name: "A" })).toBeInTheDocument();
 
     // Check if WordResults is rendered (by checking the prompt message)
+    expect(screen.getByText('Tap letters to make them available.')).toBeInTheDocument();
     expect(
       screen.getByText(
-        "Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end."
+        'Tap again to require words to use them at the start, anywhere in the word or at the end.'
       )
     ).toBeInTheDocument();
   });

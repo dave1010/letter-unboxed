@@ -12,19 +12,26 @@ interface WordResultsProps {
 }
 
 const WordResults: React.FC<WordResultsProps> = ({ results, lettersSelected }) => {
-  const noLettersMessage =
-    "Tap letters to make them available. Tap again to require words to use them at the start, anywhere in the word or at the end.";
+  const noLettersMessagePart1 =
+    "Tap letters to make them available.";
+  const noLettersMessagePart2 =
+    "Tap again to require words to use them at the start, anywhere in the word or at the end.";
   const noWordsMessage = "No words found for the selected letters.";
   return (
-    <div className="border-t border-gray-600 pt-5 h-full flex flex-col">
+    <div className="pt-5 h-full flex flex-col">
       {results.length === 0 ? (
         <div className="flex-grow flex items-center justify-center">
-          <p className="text-center text-gray-400 px-4">
-            {lettersSelected ? noWordsMessage : noLettersMessage}
-          </p>
+          {lettersSelected ? (
+            <p className="text-center text-gray-400 px-4">{noWordsMessage}</p>
+          ) : (
+            <div className="text-center text-gray-400 px-4 space-y-2">
+              <p>{noLettersMessagePart1}</p>
+              <p>{noLettersMessagePart2}</p>
+            </div>
+          )}
         </div>
       ) : (
-        <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 overflow-y-auto border border-gray-600 p-2 rounded-md bg-gray-800/50">
+        <ul className="grid grid-cols-[repeat(auto-fill,minmax(100px,1fr))] gap-2 overflow-y-auto p-2 rounded-md bg-gray-800/50">
           {results.map((word) => {
             const longWord = word.length >= 15;
             return (

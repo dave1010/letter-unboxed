@@ -1,7 +1,12 @@
 export type LetterStatus = 'available' | 'required-start' | 'required-anywhere' | 'required-end' | 'excluded';
 
-export function getLetterButtonClasses(status: LetterStatus, interactive = true): string {
-  const base = `py-2 text-lg font-bold rounded transition border-2 shadow-md${interactive ? ' hover:scale-105' : ''}`;
+export function getLetterButtonClasses(
+  status: LetterStatus,
+  interactive = true,
+  compact = false,
+): string {
+  const sizeClasses = compact ? 'py-1 text-sm' : 'py-2 text-lg';
+  const base = `${sizeClasses} font-bold rounded transition border-2 shadow-md${interactive ? ' hover:scale-105' : ''}`;
   const alignClass =
     status === 'required-start'
       ? 'text-left pl-0'
