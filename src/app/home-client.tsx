@@ -70,6 +70,9 @@ export default function Home({ wordList }: HomeProps) {
       });
       return updated;
     });
+    if (!enableAllNext) {
+      setLetterGroups('');
+    }
     setEnableAllNext(!enableAllNext);
   };
 

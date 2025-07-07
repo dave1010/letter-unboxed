@@ -161,6 +161,25 @@ describe("Home", () => {
     expect(screen.getByRole("button", { name: "A" })).toHaveClass("border-gray-700");
   });
 
+  it("clears letter groups when clearing all letters", () => {
+    render(<Home wordList={mockWordList} />);
+    fireEvent.click(screen.getByRole("button", { name: "A" }));
+    fireEvent.click(screen.getByRole("button", { name: "B" }));
+    fireEvent.click(screen.getByRole("button", { name: "Groups" }));
+    let letters = screen
+      .getAllByRole("button")
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent || ""));
+    expect(letters.map((btn) => btn.textContent)).toEqual(["A", "B"]);
+    fireEvent.click(screen.getByRole("button", { name: "Letters" }));
+    fireEvent.click(screen.getByRole("button", { name: "Enable all letters" }));
+    fireEvent.click(screen.getByRole("button", { name: "Clear all letters" }));
+    fireEvent.click(screen.getByRole("button", { name: "Groups" }));
+    letters = screen
+      .getAllByRole("button")
+      .filter((btn) => /^[A-Z]$/.test(btn.textContent || ""));
+    expect(letters).toEqual([]);
+  });
+
   it("updates URL fragment with current state", async () => {
     render(<Home wordList={mockWordList} />);
     fireEvent.click(screen.getByRole("button", { name: "A" }));
