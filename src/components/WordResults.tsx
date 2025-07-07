@@ -8,21 +8,18 @@ export type SortOrder =
 
 interface WordResultsProps {
   results: string[];
-  resultCount?: number;
   onSortChange?: (sortOrder: SortOrder) => void;
   sortOrder?: SortOrder;
 }
 
 const WordResults: React.FC<WordResultsProps> = ({
   results,
-  resultCount = results.length,
   onSortChange = () => {},
   sortOrder = 'alphabetical-asc',
 }) => {
   return (
     <div className="border-t border-gray-600 pt-5">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-semibold text-gray-200">Results ({resultCount})</h2>
+      <div className="flex justify-end mb-4">
         <div className="flex items-center space-x-2">
           <label htmlFor="sortOrder" className="text-sm text-gray-300">Sort:</label>
         <select

@@ -94,13 +94,13 @@ describe("Home", () => {
   });
 
   it("passes correct props to LetterSelector and WordResults", () => {
-    const { getByText } = render(<Home wordList={mockWordList} />);
+    render(<Home wordList={mockWordList} />);
 
     // Check if LetterSelector is rendered (by checking one of its internal elements)
     expect(screen.getByRole("button", { name: "A" })).toBeInTheDocument();
 
-    // Check if WordResults is rendered (by checking one of its internal elements)
-    expect(getByText(/Results \(\d+\)/)).toBeInTheDocument();
+    // Check if WordResults is rendered (by checking the sort dropdown)
+    expect(screen.getByLabelText("Sort:")).toBeInTheDocument();
   });
 
   it("toggles group view when Groups and Letters buttons are clicked", () => {
