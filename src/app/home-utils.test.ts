@@ -5,6 +5,7 @@ import {
   cycleMap,
   computeResults,
   calculateGroups,
+  findCheatPairs,
 } from "./home-utils";
 import type { LetterStatus } from "../components/letterStyles";
 
@@ -46,5 +47,15 @@ describe("home-utils", () => {
     statuses.c = "available";
     groups = calculateGroups(statuses, "ab,cd");
     expect(groups).toBe("ab,c");
+  });
+
+  it("findCheatPairs finds word pairs using all letters", () => {
+    const dict = new Dictionary("abc", "cdefghijkl", "xyz");
+    const statuses = createDefaultStatuses();
+    "abcdefghijkl".split("").forEach((c) => {
+      statuses[c] = "available";
+    });
+    const pairs = findCheatPairs(dict, statuses, "");
+    expect(pairs).toEqual(["abc cdefghijkl"]);
   });
 });

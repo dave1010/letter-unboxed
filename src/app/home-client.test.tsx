@@ -149,6 +149,20 @@ describe("Home", () => {
     expect(letters).toEqual(["A", "B", "C"]);
   });
 
+  it("shows Cheat button in group view and alerts pairs", () => {
+    const words = ["abc", "cdefghijkl"];
+    render(<Home wordList={words} />);
+    "abcdefghijkl".split("").forEach((l) => {
+      fireEvent.click(screen.getByRole("button", { name: l.toUpperCase() }));
+    });
+    const alertMock = vi.spyOn(window, "alert").mockImplementation(() => {});
+    fireEvent.click(screen.getByRole("button", { name: "Groups" }));
+    const cheatBtn = screen.getByRole("button", { name: "Cheat" });
+    fireEvent.click(cheatBtn);
+    expect(alertMock).toHaveBeenCalledWith("abc cdefghijkl");
+    alertMock.mockRestore();
+  });
+
   it("toggles all letters available and back", () => {
     render(<Home wordList={mockWordList} />);
     const toggle = screen.getByRole("button", { name: "Enable all letters" });

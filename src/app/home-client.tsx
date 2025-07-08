@@ -13,6 +13,7 @@ import {
   createDefaultStatuses,
   cycleMap,
   calculateGroups,
+  findCheatPairs,
 } from "./home-utils";
 
 interface HomeProps {
@@ -83,6 +84,15 @@ export default function Home({ wordList }: HomeProps) {
   const handleShowGroups = () => {
     setLetterGroups(calculateGroups(letterStatuses, letterGroups));
     setShowLetterGroups(true);
+  };
+
+  const handleCheat = () => {
+    const pairs = findCheatPairs(dictionary, letterStatuses, letterGroups);
+    if (pairs.length) {
+      alert(pairs.join('\n'));
+    } else {
+      alert('No pairs found');
+    }
   };
 
   return (
@@ -263,6 +273,7 @@ export default function Home({ wordList }: HomeProps) {
             letterGroups={letterGroups}
             onGroupsChange={setLetterGroups}
             onShowLetters={() => setShowLetterGroups(false)}
+            onCheat={handleCheat}
           />
         )}
       </div>

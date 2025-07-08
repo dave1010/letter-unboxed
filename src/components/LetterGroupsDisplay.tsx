@@ -19,6 +19,7 @@ interface LetterGroupsDisplayProps {
   letterGroups: string;
   onGroupsChange: (groups: string) => void;
   onShowLetters: () => void;
+  onCheat?: () => void;
 }
 
 function DraggableLetter({ char, groupIndex, status }: { char: string; groupIndex: number; status: LetterStatus }) {
@@ -72,6 +73,7 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
   letterGroups,
   onGroupsChange,
   onShowLetters,
+  onCheat,
 }) => {
   const groups = letterGroups ? letterGroups.split(',').filter(Boolean) : [];
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 0 } }));
@@ -123,6 +125,14 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
         >
           Letters
         </button>
+        {onCheat && (
+          <button
+            onClick={onCheat}
+            className="py-2 px-4 text-lg font-bold rounded transition border-2 shadow-md hover:scale-105 bg-gray-600 text-gray-300 border-gray-700"
+          >
+            Cheat
+          </button>
+        )}
       </div>
       <DragOverlay>
         {activeChar ? (
