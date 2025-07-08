@@ -27,16 +27,21 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
     data: { char, groupIndex },
     attributes: { tabIndex: -1 },
   });
-  const style = transform
-    ? { transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` }
+  const style: React.CSSProperties | undefined = isDragging
+    ? ({ position: 'absolute', width: 0, height: 0 } as React.CSSProperties)
+    : transform
+    ? ({ transform: `translate3d(${transform.x}px, ${transform.y}px, 0)` } as React.CSSProperties)
     : undefined;
+  const widthClass = isDragging ? '' : 'w-12';
   return (
     <button
       ref={setNodeRef}
       type="button"
       style={style}
       aria-label={char.toUpperCase()}
-      className={`${getLetterButtonClasses(status, false)} aspect-square w-12 touch-none ${isDragging ? 'opacity-0' : ''}`}
+      className={`${getLetterButtonClasses(status, false)} aspect-square ${widthClass} touch-none${
+        isDragging ? ' pointer-events-none' : ''
+      }`}
       {...listeners}
       {...attributes}
     >
@@ -45,12 +50,37 @@ function DraggableLetter({ char, groupIndex, status }: { char: string; groupInde
   );
 }
 
-function LetterGroup({ letters, index, statuses, isDropTarget, insertionIndex }: { letters: string; index: number; statuses: Record<string, LetterStatus>; isDropTarget: boolean; insertionIndex: number | null }) {
+function LetterGroup({
+  letters,
+  index,
+  statuses,
+  isDropTarget,
+  insertionIndex,
+  activeChar,
+  draggingFrom,
+}: {
+  letters: string;
+  index: number;
+  statuses: Record<string, LetterStatus>;
+  isDropTarget: boolean;
+  insertionIndex: number | null;
+  activeChar: string | null;
+  draggingFrom: number | null;
+}) {
   const { setNodeRef } = useDroppable({ id: index });
+  const draggingHere = draggingFrom === index && activeChar;
+  if (letters.length === 1 && draggingHere && !isDropTarget) {
+    return null;
+  }
+  const placeholder = isDropTarget ? 1 : 0;
+  const widthRem = Math.max(1, letters.length - (draggingHere ? 1 : 0) + placeholder) * 3.5;
   return (
     <div
       ref={setNodeRef}
-      className={`p-1 border-2 rounded flex gap-1 min-w-14 ${isDropTarget ? 'border-blue-500 bg-blue-800/50' : 'border-gray-500'}`}
+      style={{ width: `${widthRem}rem` }}
+      className={`p-1 border-2 rounded flex gap-1 min-w-14 transition-all duration-200 ${
+        isDropTarget ? 'border-blue-500 bg-blue-800/50' : 'border-gray-500'
+      }`}
     >
       {letters.split('').map((char, i) => (
         <React.Fragment key={char}>
@@ -78,10 +108,13 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
 
   const [activeChar, setActiveChar] = useState<string | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
+  const [draggingFrom, setDraggingFrom] = useState<number | null>(null);
 
   const handleDragStart = (event: DragStartEvent) => {
     const data = event.active.data.current as { char: string; groupIndex: number } | undefined;
     setActiveChar(data?.char || null);
+    setDraggingFrom(typeof data?.groupIndex === 'number' ? data.groupIndex : null);
+    setOverIndex(typeof data?.groupIndex === 'number' ? data.groupIndex : null);
   };
 
   const handleDragOver = (event: DragOverEvent) => {
@@ -97,6 +130,7 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
     onGroupsChange(updated.join(','));
     setActiveChar(null);
     setOverIndex(null);
+    setDraggingFrom(null);
   };
 
   return (
@@ -114,7 +148,16 @@ const LetterGroupsDisplay: React.FC<LetterGroupsDisplayProps> = ({
             index={index}
             statuses={letterStatuses}
             isDropTarget={overIndex === index}
-            insertionIndex={activeChar && overIndex === index ? getInsertionIndex(group, activeChar) : null}
+            insertionIndex={
+              activeChar && overIndex === index
+                ? getInsertionIndex(
+                    draggingFrom === index && activeChar ? group.replace(activeChar, '') : group,
+                    activeChar,
+                  )
+                : null
+            }
+            activeChar={activeChar}
+            draggingFrom={draggingFrom}
           />
         ))}
         <button
