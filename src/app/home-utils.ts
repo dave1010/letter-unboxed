@@ -106,3 +106,59 @@ export function calculateGroups(
 
   return groups.join(",");
 }
+
+export function findCheatPairs(
+  dictionary: Dictionary | null,
+  letterStatuses: Record<string, LetterStatus>,
+  letterGroups: string,
+): string[] {
+  if (!dictionary) return [];
+
+  const availableLetters = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "available")
+    .join("");
+  const requiredAnywhere = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-anywhere")
+    .join("");
+  const requiredStart = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-start")
+    .join("");
+  const requiredEnd = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "required-end")
+    .join("");
+  const excludedLetters = Object.keys(letterStatuses)
+    .filter((char) => letterStatuses[char] === "excluded")
+    .join("");
+
+  const filtered = dictionary.filter(
+    availableLetters,
+    requiredAnywhere + requiredStart + requiredEnd,
+    excludedLetters,
+    requiredStart,
+    requiredEnd,
+    letterGroups,
+  );
+
+  const selectedLetters = (
+    availableLetters + requiredAnywhere + requiredStart + requiredEnd
+  ).split("");
+  const selectedSet = new Set(selectedLetters);
+
+  const pairs: string[] = [];
+  for (const w1 of filtered) {
+    for (const w2 of filtered) {
+      if (w1[w1.length - 1] !== w2[0]) continue;
+      if (w1.length + w2.length < 12) continue;
+      const combined = w1 + w2;
+      let usesAll = true;
+      for (const ch of selectedSet) {
+        if (!combined.includes(ch)) {
+          usesAll = false;
+          break;
+        }
+      }
+      if (usesAll) pairs.push(`${w1} ${w2}`);
+    }
+  }
+  return pairs;
+}
