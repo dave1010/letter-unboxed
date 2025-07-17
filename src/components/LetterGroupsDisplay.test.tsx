@@ -47,4 +47,17 @@ describe('LetterGroupsDisplay', () => {
     const letterButton = screen.getByRole('button', { name: 'A' });
     expect(letterButton).toHaveAttribute('tabindex', '-1');
   });
+
+  it('letter groups animate width changes', () => {
+    render(
+      <LetterGroupsDisplay
+        letterStatuses={letterStatuses}
+        letterGroups="a,b"
+        onGroupsChange={() => {}}
+        onShowLetters={() => {}}
+      />
+    );
+    const group = screen.getAllByRole('button', { name: 'A' })[0].closest('div');
+    expect(group).toHaveClass('transition-all');
+  });
 });
